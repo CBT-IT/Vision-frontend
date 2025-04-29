@@ -1,0 +1,32 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+function App() {
+  const [count, setcount] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}/user-count`)
+      .then((response) => setcount(response.data.count))
+      .catch((err) => {
+        console.error(err);
+        setError("Error fetching count");
+      });
+  }, []);
+  return (
+    <div
+      style={{
+        textAlign: "center",
+        marginTop: "80px",
+        fontFamily: "sans-serif",
+      }}
+    >
+      <h1>User Info Count</h1>
+      {error && <p Style={{ color: "red" }}>{error}</p>}
+      {count !== null ? <h2>{count}</h2> : <h2>Loading ...</h2>}
+    </div>
+  );
+}
+
+export default App;
