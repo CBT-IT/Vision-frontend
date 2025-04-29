@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AppRouter from "./routes/AppRouter";
 
-const pca = new PublicClientApplication(msalConfig);
-
 function App() {
   return <AppRouter />;
 }
