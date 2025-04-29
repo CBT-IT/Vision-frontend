@@ -3,8 +3,8 @@ import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
-  authDomain: REACT_APP_FIREBASE_DOMAIN,
-  projectId: REACT_APP_FIREBASE_PROJECTID,
+  authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
 };
 
 const app = initializeApp(firebaseConfig);
