@@ -1,39 +1,12 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { PublicClientApplication } from "@azure/msal-browser";
-import { MsalProvider, useMsal } from "@azure/msal-react";
-import { msalConfig } from "./authConfig";
+import AppRouter from "./routes/AppRouter";
 
 const pca = new PublicClientApplication(msalConfig);
 
-function SignInButton() {
-  const { instance } = useMsal();
-  const handleLogin = () => instance.loginPopup();
-  return <button onClick={handleLogin}>Sign in with CBT - Microsoft</button>;
-}
-
-function Dashboard() {
-  const { accounts } = useMsal();
-  return (
-    <div>
-      <h1>Welcome, {accounts[0]?.name}</h1>
-      <p>You are authorized to view the dashboardf</p>
-    </div>
-  );
-}
-
-function MainApp() {
-  const { accounts } = useMsal();
-  return accounts.length > 0 ? <Dashboard /> : <SignInButton />;
-}
-
 function App() {
-  return (
-    <MsalProvider instance={pca}>
-      <MainApp />
-    </MsalProvider>
-  );
+  return <AppRouter />;
 }
+
 // function App() {
 //   const [count, setcount] = useState(null);
 //   const [error, setError] = useState(null);
