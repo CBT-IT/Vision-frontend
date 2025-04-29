@@ -23,6 +23,7 @@ function App() {
       }}
     >
       <h1>User Info Count</h1>
+      <h1>Deployemnt Ready!!</h1>
       {error && <p Style={{ color: "red" }}>{error}</p>}
       {count !== null ? <h2>{count}</h2> : <h2>Loading ...</h2>}
     </div>
