@@ -10,6 +10,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const isValidEmail = email.endsWith("@cbtarchitects.com");
+  const canEnablePassword = isValidEmail;
+  const canEnableButton = isValidEmail && password.length > 0;
+
+  const handleEmailClick = () => {
+    setPassword("");
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!email.endsWith("@cbtarchitects.com")) {
@@ -26,22 +34,27 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="page-container">
       <div className="header">
         <div>VISION</div>
       </div>
       <div className="login-container">
-        <h2>Login with your CBT Email</h2>
         <form onSubmit={handleLogin}>
           <input
+            id="login-input-mail"
+            className="login-input"
             type="email"
             value={email}
-            placeholder="Email"
+            placeholder="CBT Email"
             onChange={(e) => setEmail(e.target.value)}
+            onClick={handleEmailClick}
           />
           <br />
           <br />
           <input
+            disabled={!canEnablePassword}
+            id="login-input-password"
+            className={`login-input ${!canEnablePassword ? "disabled" : ""}`}
             type="password"
             value={password}
             placeholder="Password"
@@ -49,7 +62,13 @@ export default function Login() {
           />
           <br />
           <br />
-          <button type="submit">Login</button>
+          <button
+            className={`login-button ${!canEnableButton ? "disabled" : ""}`}
+            type="submit"
+            disabled={!canEnableButton}
+          >
+            Sign in
+          </button>
           {error && <p style={{ color: "red" }}>{error}</p>}
         </form>
       </div>
