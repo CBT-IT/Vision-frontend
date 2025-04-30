@@ -34,11 +34,11 @@ export default function Login() {
   };
 
   return (
-    <div className="page-container">
-      <div className="header">
+    <div className="login-page-container">
+      <div className="login-header">
         <div>VISION</div>
       </div>
-      <div className="login-container">
+      <div className="login-login-container">
         <form onSubmit={handleLogin}>
           <input
             id="login-input-mail"
@@ -54,7 +54,9 @@ export default function Login() {
           <input
             disabled={!canEnablePassword}
             id="login-input-password"
-            className={`login-input ${!canEnablePassword ? "disabled" : ""}`}
+            className={`login-input ${
+              !canEnablePassword ? "login-disabled" : ""
+            }`}
             type="password"
             value={password}
             placeholder="Password"
@@ -63,7 +65,9 @@ export default function Login() {
           <br />
           <br />
           <button
-            className={`login-button ${!canEnableButton ? "disabled" : ""}`}
+            className={`login-button ${
+              !canEnableButton ? "login-disabled" : ""
+            }`}
             type="submit"
             disabled={!canEnableButton}
           >

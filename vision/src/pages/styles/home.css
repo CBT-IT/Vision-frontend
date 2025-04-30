@@ -1,0 +1,29 @@
+body {
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+}
+.home-page-container {
+  padding: 50px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.home-main-nav-container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+.home-data-container {
+  background-color: #efefef;
+  flex-grow: 1;
+  padding: 20px;
+  border-radius: 10px;
+}
+.home-header {
+  font-size: 32px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  transform: scaleY(0.9);
+}
