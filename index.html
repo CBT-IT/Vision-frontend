@@ -6,6 +6,29 @@
     <title>VISION</title>
   </head>
   <body>
-    <h1>Hi from vision</h1>
+    <div class="main-container">
+      <div class="header-container">VISION</div>
+      <div class="login-container">
+        <form id="sign-in-form" action="submit">
+          <input
+            type="email"
+            name="email"
+            id="input-email"
+            placeholder="CBT email address"
+          />
+          <input
+            type="password"
+            name="password"
+            id="input-password"
+            placeholder="Password"
+          />
+          <button type="submit" id="sign-in-button">Sign In</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Your authentication script -->
+    <script type="module" src="../utility/auth.js"></script>
+    <script type="module" src="./scripts/index.js"></script>
   </body>
 </html>
