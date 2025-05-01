@@ -1,81 +1,45 @@
-import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../auth/firebaseConfig";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../context/AuthProvider";
 import "../pages/styles/login.css";
 
-export default function Login() {
-  const navigate = useNavigate();
+const Login = () => {
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
-  const isValidEmail = email.endsWith("@cbtarchitects.com");
-  const canEnablePassword = isValidEmail;
-  const canEnableButton = isValidEmail && password.length > 0;
-
-  const handleEmailClick = () => {
-    setPassword("");
-  };
-
-  const handleLogin = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email.endsWith("@cbtarchitects.com")) {
-      setError("Only CBT email addresses allowed.");
-      return;
-    }
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/home");
-    } catch (err) {
-      setError(err.message);
-    }
+    login(email, password);
   };
 
   return (
     <div className="login-page-container">
-      <div className="login-header">
-        <div>VISION</div>
-      </div>
+      <div className="login-header">VISION</div>
       <div className="login-login-container">
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleSubmit}>
           <input
-            id="login-input-mail"
-            className="login-input"
             type="email"
+            className="login-input"
             value={email}
-            placeholder="CBT Email"
             onChange={(e) => setEmail(e.target.value)}
-            onClick={handleEmailClick}
+            placeholder="CBT email address"
+            required
           />
-          <br />
-          <br />
           <input
-            disabled={!canEnablePassword}
-            id="login-input-password"
-            className={`login-input ${
-              !canEnablePassword ? "login-disabled" : ""
-            }`}
             type="password"
+            className="login-input"
             value={password}
-            placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="passsword"
+            required
           />
-          <br />
-          <br />
-          <button
-            className={`login-button ${
-              !canEnableButton ? "login-disabled" : ""
-            }`}
-            type="submit"
-            disabled={!canEnableButton}
-          >
+          <button type="submit" className="login-button">
             Sign in
           </button>
-          {error && <p style={{ color: "red" }}>{error}</p>}
         </form>
       </div>
     </div>
   );
-}
+};
+
+export default Login;

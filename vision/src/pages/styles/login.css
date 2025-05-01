@@ -3,7 +3,6 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .login-page-container {
-  margin: 10px;
   box-sizing: border-box;
   height: 100vh;
   display: flex;
@@ -12,11 +11,14 @@ body {
   align-content: center;
   text-align: center;
 }
-.login-login-container {
+form {
   display: flex;
   flex-direction: column;
-  align-content: center;
+  align-items: center;
   justify-content: center;
+}
+input {
+  margin-bottom: 10px;
 }
 .login-header {
   margin: 0;
@@ -27,6 +29,7 @@ body {
   font-size: 128px;
   letter-spacing: 10px;
   transform: scaleY(0.9);
+  cursor: default;
 }
 .login-input {
   width: 420px;
@@ -47,6 +50,7 @@ body {
   background-color: black;
   border: none;
   border-radius: 10px;
+  cursor: pointer;
 }
 .login-disabled {
   opacity: 50%;
