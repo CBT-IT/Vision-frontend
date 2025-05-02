@@ -24,7 +24,7 @@ export async function getUserCount(token) {
     }
   );
   const data = await res.json();
-  console.log("User Count:", data.count);
+  console.log("User Count:", data);
   return data.count;
 }
 export async function getSyncInfo(token) {
