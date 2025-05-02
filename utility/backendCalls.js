@@ -15,9 +15,9 @@ export async function getUserCount(token) {
 }
 
 export async function getUserMappings(token) {
-  const res = await fetch("https://vision-backend-32ia.onrender.com/users)", {
+  const res = await fetch("https://vision-backend-32ia.onrender.com/users", {
     method: "GET",
-    header: {
+    headers: {
       Authorization: `Bearer ${token}`,
     },
   });
