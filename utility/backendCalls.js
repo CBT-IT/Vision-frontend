@@ -1,3 +1,18 @@
+export async function getUserInfo(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/user-info",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  console.log("User Info:");
+  console.log(data);
+  return data.count;
+}
 export async function getUserCount(token) {
   const res = await fetch(
     "https://vision-backend-32ia.onrender.com/user-info-count",
@@ -9,11 +24,38 @@ export async function getUserCount(token) {
     }
   );
   const data = await res.json();
-
   console.log("User Count:", data.count);
   return data.count;
 }
-
+export async function getSyncInfo(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/sync-info",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  console.log("Sync Info:");
+  console.log(data);
+  return data.count;
+}
+export async function getSyncInfoCount(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/sync-info-count",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  console.log("Sync Info Count:", data.count);
+  return data.count;
+}
 export async function getUserMappings(token) {
   const res = await fetch("https://vision-backend-32ia.onrender.com/users", {
     method: "GET",
@@ -22,7 +64,51 @@ export async function getUserMappings(token) {
     },
   });
   const data = await res.json();
-  console.log("UserMapings");
+  console.log("UserMapings:");
   console.log(data);
   return data;
+}
+export async function getPluginUse(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/plugin-use",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  console.log("Plugin Use:");
+  console.log(data);
+  return data.count;
+}
+export async function getPluginUseCount(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/plugin-use-count",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  console.log("Plugin Use Count:", data.count);
+  return data.count;
+}
+export async function getViewBookmarks(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/view-bookmarks",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  console.log("View Bookmarks:");
+  console.log(data);
+  return data.count;
 }
