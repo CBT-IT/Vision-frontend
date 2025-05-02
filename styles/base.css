@@ -1,0 +1,41 @@
+:root {
+  --cbt-blue: #00bac6;
+  --font-main: "Kanit", sans-serif;
+  --font-secondary: Verdana, Geneva, Tahoma, sans-serif;
+  --primary-color: #efefef;
+  --secondary-color: #777777;
+  --primary-border-radius: 20px;
+}
+body {
+  margin: 0;
+  background-color: white;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.primary-button {
+  color: white;
+  background-color: black;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+#nav-title {
+  font-family: var(--font-main);
+  font-weight: bold;
+  font-size: 40px;
+  letter-spacing: 3px;
+}
+#nav-contents {
+  display: flex;
+  flex-direction: row;
+  text-align: right;
+  align-items: center;
+  gap: 20px;
+}

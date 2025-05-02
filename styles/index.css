@@ -1,0 +1,40 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.header-container {
+  font-family: var(--font-main);
+  font-size: 128px;
+  font-weight: 500;
+  letter-spacing: 5px;
+  transform: scaleY(0.9);
+  cursor: default;
+}
+.login-container {
+  padding-bottom: 50px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+input {
+  width: 400px;
+  height: 40px;
+  background-color: var(--primary-color);
+  text-align: center;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  color: var(--secondary-color);
+}
+input:disabled,
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

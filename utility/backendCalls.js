@@ -56,9 +56,9 @@ export async function getSyncInfoCount(token) {
   console.log("Sync Info Count:", data.count);
   return data.count;
 }
-export async function getUserMappings(token) {
+export async function getUserMappingsByEmail(token, user) {
   const res = await fetch(
-    "https://vision-backend-32ia.onrender.com/user-mappings",
+    `https://vision-backend-32ia.onrender.com/user-mappings-by-email?user=${user}`,
     {
       method: "GET",
       headers: {
@@ -67,8 +67,8 @@ export async function getUserMappings(token) {
     }
   );
   const data = await res.json();
-  console.log("UserMapings:");
-  console.log(data);
+  // console.log("UserMapings:");
+  // console.log(data);
   return data;
 }
 export async function getPluginUse(token) {

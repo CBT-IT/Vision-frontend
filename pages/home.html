@@ -4,12 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="../vision.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../styles/base.css" />
+    <link rel="stylesheet" href="../styles/home.css" />
     <title>VISION | Home</title>
   </head>
   <body>
-    <div id="user"></div>
-    <div id="count"></div>
-    <button id="logout-button">Logout</button>
+    <div id="loading-message">
+      <div>HOLD ON</div>
+      <div id="sub-message">Loading Data</div>
+      <img src="../loading.gif" alt="loading" />
+    </div>
+    <div id="main-container" style="display: none">
+      <div id="navbar-placeholder"></div>
+      <div id="data-view"></div>
+    </div>
+
     <script type="module" src="../scripts/home.js"></script>
   </body>
 </html>

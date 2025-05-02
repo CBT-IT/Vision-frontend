@@ -1,0 +1,35 @@
+#loading-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: var(--font-main);
+  font-weight: bold;
+  font-size: 100px;
+  gap: 10px;
+}
+#sub-message {
+  font-size: 50px;
+  font-style: italic;
+  color: var(--cbt-blue);
+}
+img {
+  width: 100px;
+}
+#main-container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-secondary);
+  height: 100vh;
+  padding: 30px;
+}
+#data-view {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--primary-color);
+  flex-grow: 1;
+  border-radius: var(--primary-border-radius);
+}
