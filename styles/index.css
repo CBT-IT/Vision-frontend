@@ -33,8 +33,3 @@ input {
   padding: 10px;
   color: var(--secondary-color);
 }
-input:disabled,
-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}

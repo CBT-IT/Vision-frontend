@@ -11,6 +11,19 @@ export async function getSessionsInfo(token) {
   const data = await res.json();
   return data.count;
 }
+export async function getUserCount(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/user-count",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
+}
 export async function getSessionsInfoToday(token) {
   const res = await fetch(
     "https://vision-backend-32ia.onrender.com/sessions-info-today",
@@ -129,7 +142,6 @@ export async function getPluginUseCount(token) {
     }
   );
   const data = await res.json();
-  console.log("Plugin Use Count:", data.count);
   return data.count;
 }
 export async function getViewBookmarks(token) {

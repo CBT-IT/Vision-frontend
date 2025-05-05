@@ -1,0 +1,8 @@
+#main-container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-secondary);
+  height: 100vh;
+  padding: 30px;
+}

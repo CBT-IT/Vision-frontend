@@ -5,6 +5,7 @@ import {
   getSyncInfoToday,
   getPluginUseCount,
   getPluginUseToday,
+  getUserCount,
   getSessionsInfo,
   getSyncInfo,
   getSyncInfoCount,
@@ -25,17 +26,6 @@ async function initHomepage() {
   try {
     main_container.style.display = "none";
     loading_screen.style.display = "flex";
-
-    // const userInfo = await getUserInfo(token);
-    // const userInfoCount = await getUserCount(token);
-
-    // const syncInfo = await getSyncInfo(token);
-    // const syncInfoCount = await getSyncInfoCount(token);
-    // const pluginUse = await getPluginUse(token);
-    // const pluginUseCount = await getPluginUseCount(token);
-    // const viewBookmarks = await getViewBookmarks(token);
-    // console.log(userMappings);
-
     await updatePage();
     await sleep(1000);
     loading_screen.style.display = "none";
@@ -44,12 +34,19 @@ async function initHomepage() {
     alert("Error Loading: " + err.message);
   }
 }
-
 async function updatePage() {
   //add navbar
   const navres = await fetch("/components/navbar.html");
   const navHTML = await navres.text();
   document.getElementById("navbar-placeholder").innerHTML = navHTML;
+
+  await import("../scripts/navbar.js");
+
+  const page_title = document.getElementById("page-title");
+  page_title.innerHTML = "Home<br>Page";
+
+  const back_button = document.getElementById("back-button");
+  back_button.disabled = true;
 
   const user_name = document.getElementById("user-name");
   const userMappings = await getUserMappingsByEmail(token, user);
@@ -68,8 +65,8 @@ async function updatePage() {
   await populateSessionsCard();
   await populateSyncsCard();
   await populatePluginCard();
+  await populateUserCard();
 }
-
 async function populateSessionsCard() {
   const sessionsToday = await getSessionsInfoToday(token);
   const sessionsTodayCount = sessionsToday.sessionsInfo.length;
@@ -81,7 +78,6 @@ async function populateSessionsCard() {
   sessions_button_data.textContent = sessionsCount;
   sessions_button_summary.textContent = `+${sessionsTodayCount}`;
 }
-
 async function populateSyncsCard() {
   const syncCount = await getSyncInfoCount(token);
   const syncs_button_data = document.getElementById("syncs-button-data");
@@ -90,6 +86,12 @@ async function populateSyncsCard() {
   const syncInfoToday = await getSyncInfoToday(token);
   const syncs_button_summary = document.getElementById("syncs-button-summary");
   syncs_button_summary.textContent = `+${syncInfoToday.syncInfo.length}`;
+
+  const sessionsCard = document.getElementById("sessions-button");
+  sessionsCard.addEventListener("click", () => {
+    console.log("Sessions Card Clicked");
+    window.location.href = "/pages/sessions.html";
+  });
 }
 async function populatePluginCard() {
   const pluginCount = await getPluginUseCount(token);
@@ -102,7 +104,11 @@ async function populatePluginCard() {
   );
   plugin_button_summary.textContent = `+${pluginUseToday.pluginUse.length}`;
 }
-
+async function populateUserCard() {
+  const userCount = await getUserCount(token);
+  const user_button_data = document.getElementById("user-button-data");
+  user_button_data.textContent = userCount.count;
+}
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

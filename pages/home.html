@@ -19,8 +19,14 @@
       <div id="data-view">
         <div id="left-data-view">
           <div class="data-button" id="sessions-button">
-            <div class="data-button-header" id="sessions-button-header">
-              Sessions
+            <div class="data-header-tab">
+              <div class="data-button-header" id="sessions-button-header">
+                Sessions
+              </div>
+              <div
+                class="data-button-summary"
+                id="sessions-button-summary"
+              ></div>
             </div>
             <div class="button-data-container">
               <img
@@ -31,11 +37,14 @@
               />
               <div class="data-button-data" id="sessions-button-data"></div>
             </div>
-
-            <div class="data-button-summary" id="sessions-button-summary"></div>
           </div>
           <div class="data-button" id="syncs-button">
-            <div class="data-button-header" id="syncs-button-header">Syncs</div>
+            <div class="data-header-tab">
+              <div class="data-button-header" id="syncs-button-header">
+                Syncs
+              </div>
+              <div class="data-button-summary" id="syncs-button-summary"></div>
+            </div>
             <div class="button-data-container">
               <img
                 src="../resources/logos/syncs.png"
@@ -45,11 +54,13 @@
               />
               <div class="data-button-data" id="syncs-button-data"></div>
             </div>
-            <div class="data-button-summary" id="syncs-button-summary"></div>
           </div>
           <div class="data-button" id="plugin-button">
-            <div class="data-button-header" id="plugin-button-header">
-              Plugin Use
+            <div class="data-header-tab">
+              <div class="data-button-header" id="plugin-button-header">
+                Plugin Use
+              </div>
+              <div class="data-button-summary" id="plugin-button-summary"></div>
             </div>
             <div class="button-data-container">
               <img
@@ -60,7 +71,23 @@
               />
               <div class="data-button-data" id="plugin-button-data"></div>
             </div>
-            <div class="data-button-summary" id="plugin-button-summary"></div>
+          </div>
+          <div class="data-button" id="user-button">
+            <div class="data-header-tab">
+              <div class="data-button-header" id="user-button-header">
+                Users
+              </div>
+              <div class="data-button-summary" id="user-button-summary"></div>
+            </div>
+            <div class="button-data-container">
+              <img
+                src="../resources/logos/users.png"
+                class="button-logo"
+                id="user-button-logo"
+                alt="user logo"
+              />
+              <div class="data-button-data" id="user-button-data"></div>
+            </div>
           </div>
         </div>
         <div id="right-data-chart"></div>
