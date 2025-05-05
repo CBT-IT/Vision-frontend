@@ -29,7 +29,7 @@ async function initHomepage() {
     main_container.style.display = "none";
     loading_screen.style.display = "flex";
     await updatePage();
-    await sleep(1000);
+    await sleep(500);
     loading_screen.style.display = "none";
     main_container.style.display = "flex";
   } catch (err) {
