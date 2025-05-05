@@ -9,8 +9,6 @@ export async function getSessionsInfo(token) {
     }
   );
   const data = await res.json();
-  console.log("User Info:");
-  console.log(data);
   return data.count;
 }
 export async function getSessionsInfoToday(token) {
@@ -51,8 +49,6 @@ export async function getSyncInfo(token) {
     }
   );
   const data = await res.json();
-  console.log("Sync Info:");
-  console.log(data);
   return data.count;
 }
 export async function getSyncInfoCount(token) {
@@ -66,8 +62,20 @@ export async function getSyncInfoCount(token) {
     }
   );
   const data = await res.json();
-  console.log("Sync Info Count:", data.count);
   return data.count;
+}
+export async function getSyncInfoToday(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/sync-info-today",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
 }
 export async function getUserMappingsByEmail(token, user) {
   const res = await fetch(
@@ -95,9 +103,20 @@ export async function getPluginUse(token) {
     }
   );
   const data = await res.json();
-  console.log("Plugin Use:");
-  console.log(data);
   return data.count;
+}
+export async function getPluginUseToday(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/plugin-use-today",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
 }
 export async function getPluginUseCount(token) {
   const res = await fetch(

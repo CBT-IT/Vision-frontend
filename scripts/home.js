@@ -2,11 +2,13 @@ import {
   getSessionsCount,
   getUserMappingsByEmail,
   getSessionsInfoToday,
+  getSyncInfoToday,
+  getPluginUseCount,
+  getPluginUseToday,
   getSessionsInfo,
   getSyncInfo,
   getSyncInfoCount,
   getPluginUse,
-  getPluginUseCount,
   getViewBookmarks,
 } from "../utility/backendCalls.js";
 
@@ -51,8 +53,8 @@ async function updatePage() {
 
   const user_name = document.getElementById("user-name");
   const userMappings = await getUserMappingsByEmail(token, user);
-  console.log(userMappings);
-  // user_name.innerHTML = `Welcome,<br>${userMappings.userFilter.fullName}`;
+  // console.log(userMappings);
+  user_name.innerHTML = `Welcome,<br>${userMappings.userFilter.fullName}`;
 
   document.getElementById("logout-button").addEventListener("click", () => {
     sessionStorage.clear();
@@ -65,6 +67,7 @@ async function updatePage() {
 
   await populateSessionsCard();
   await populateSyncsCard();
+  await populatePluginCard();
 }
 
 async function populateSessionsCard() {
@@ -83,6 +86,21 @@ async function populateSyncsCard() {
   const syncCount = await getSyncInfoCount(token);
   const syncs_button_data = document.getElementById("syncs-button-data");
   syncs_button_data.textContent = syncCount;
+
+  const syncInfoToday = await getSyncInfoToday(token);
+  const syncs_button_summary = document.getElementById("syncs-button-summary");
+  syncs_button_summary.textContent = `+${syncInfoToday.syncInfo.length}`;
+}
+async function populatePluginCard() {
+  const pluginCount = await getPluginUseCount(token);
+  const plugin_button_data = document.getElementById("plugin-button-data");
+  plugin_button_data.textContent = pluginCount;
+
+  const pluginUseToday = await getPluginUseToday(token);
+  const plugin_button_summary = document.getElementById(
+    "plugin-button-summary"
+  );
+  plugin_button_summary.textContent = `+${pluginUseToday.pluginUse.length}`;
 }
 
 function sleep(ms) {
