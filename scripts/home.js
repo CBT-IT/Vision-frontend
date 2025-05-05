@@ -8,6 +8,7 @@ import {
   getUserCount,
   getActiveUsersCount,
   getActivityChartData,
+  getCloudProjectsCount,
   getSessionsInfo,
   getSyncInfo,
   getSyncInfoCount,
@@ -70,6 +71,7 @@ async function updatePage() {
   await populateUserCard();
   await populateActiveUsersCard();
   await populateActivityChart();
+  await cloudProjectCard();
 }
 async function populateSessionsCard() {
   const sessionsToday = await getSessionsInfoToday(token);
@@ -161,6 +163,10 @@ async function populateActivityChart() {
       },
     },
   });
+}
+async function cloudProjectCard() {
+  const count = await getCloudProjectsCount(token);
+  console.log(count);
 }
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
