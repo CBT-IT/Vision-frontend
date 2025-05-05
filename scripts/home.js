@@ -128,7 +128,6 @@ async function populateActivityChart() {
   chartSpace.innerHTML = `<canvas id="activityChart"></canvas>`;
 
   const data = await getActivityChartData(token);
-  console.log(data);
 
   const labels = Object.keys(data); // dates
   const usageCounts = Object.values(data); // session counts
@@ -168,6 +167,7 @@ async function cloudProjectCard() {
   const count = await getCloudProjectsCount(token);
   console.log(count);
 }
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
