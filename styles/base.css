@@ -5,6 +5,7 @@
   --primary-color: #efefef;
   --secondary-color: #777777;
   --primary-border-radius: 20px;
+  --secondary-border-radius: 10px;
 }
 body {
   margin: 0;
@@ -38,4 +39,45 @@ body {
   text-align: right;
   align-items: center;
   gap: 20px;
+}
+
+/*Data Button*/
+.data-button {
+  width: 250px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: var(--secondary-border-radius);
+  border: 3px solid white;
+  box-shadow: 1px 1px 10px grey;
+}
+.data-button:hover {
+  border: 3px solid var(--cbt-blue);
+  box-shadow: none;
+}
+.button-data-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.button-logo {
+  width: 50px;
+}
+.data-button-header {
+  font-weight: bold;
+  font-style: italic;
+  letter-spacing: 2px;
+}
+.data-button-data {
+  text-align: right;
+  font-weight: bold;
+  font-size: 32px;
+}
+.data-button-summary {
+  text-align: right;
+  color: green;
+  font-weight: bold;
+  font-style: italic;
 }

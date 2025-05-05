@@ -1,7 +1,8 @@
 import {
-  getUserCount,
+  getSessionsCount,
   getUserMappingsByEmail,
-  getUserInfo,
+  getSessionsInfoToday,
+  getSessionsInfo,
   getSyncInfo,
   getSyncInfoCount,
   getPluginUse,
@@ -50,7 +51,8 @@ async function updatePage() {
 
   const user_name = document.getElementById("user-name");
   const userMappings = await getUserMappingsByEmail(token, user);
-  user_name.innerHTML = `Welcome,<br>${userMappings.userFilter.fullName}`;
+  console.log(userMappings);
+  // user_name.innerHTML = `Welcome,<br>${userMappings.userFilter.fullName}`;
 
   document.getElementById("logout-button").addEventListener("click", () => {
     sessionStorage.clear();
@@ -60,6 +62,27 @@ async function updatePage() {
   document.getElementById("refresh-button").addEventListener("click", () => {
     initHomepage();
   });
+
+  await populateSessionsCard();
+  await populateSyncsCard();
+}
+
+async function populateSessionsCard() {
+  const sessionsToday = await getSessionsInfoToday(token);
+  const sessionsTodayCount = sessionsToday.sessionsInfo.length;
+  const sessionsCount = await getSessionsCount(token);
+  const sessions_button_data = document.getElementById("sessions-button-data");
+  const sessions_button_summary = document.getElementById(
+    "sessions-button-summary"
+  );
+  sessions_button_data.textContent = sessionsCount;
+  sessions_button_summary.textContent = `+${sessionsTodayCount}`;
+}
+
+async function populateSyncsCard() {
+  const syncCount = await getSyncInfoCount(token);
+  const syncs_button_data = document.getElementById("syncs-button-data");
+  syncs_button_data.textContent = syncCount;
 }
 
 function sleep(ms) {

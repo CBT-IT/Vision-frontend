@@ -1,6 +1,6 @@
-export async function getUserInfo(token) {
+export async function getSessionsInfo(token) {
   const res = await fetch(
-    "https://vision-backend-32ia.onrender.com/user-info",
+    "https://vision-backend-32ia.onrender.com/sessions-info",
     {
       method: "GET",
       headers: {
@@ -13,9 +13,9 @@ export async function getUserInfo(token) {
   console.log(data);
   return data.count;
 }
-export async function getUserCount(token) {
+export async function getSessionsInfoToday(token) {
   const res = await fetch(
-    "https://vision-backend-32ia.onrender.com/user-info-count",
+    "https://vision-backend-32ia.onrender.com/sessions-info-today",
     {
       method: "GET",
       headers: {
@@ -24,7 +24,20 @@ export async function getUserCount(token) {
     }
   );
   const data = await res.json();
-  console.log("User Count:", data);
+  return data;
+}
+export async function getSessionsCount(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/sessions-info-count",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  // console.log("User Count:", data);
   return data.count;
 }
 export async function getSyncInfo(token) {

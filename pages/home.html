@@ -16,7 +16,41 @@
     </div>
     <div id="main-container" style="display: none">
       <div id="navbar-placeholder"></div>
-      <div id="data-view"></div>
+      <div id="data-view">
+        <div id="left-data-view">
+          <div class="data-button" id="sessions-button">
+            <div class="data-button-header" id="sessions-button-header">
+              Sessions
+            </div>
+            <div class="button-data-container">
+              <img
+                src="../resources/logos/sessions.png"
+                class="button-logo"
+                id="sessions-button-logo"
+                alt="sessions logo"
+              />
+              <div class="data-button-data" id="sessions-button-data"></div>
+            </div>
+
+            <div class="data-button-summary" id="sessions-button-summary"></div>
+          </div>
+          <div class="data-button" id="syncs-button">
+            <div class="data-button-header" id="syncs-button-header">Syncs</div>
+            <div class="button-data-container">
+              <img
+                src="../resources/logos/syncs.png"
+                class="button-logo"
+                id="syncs-button-logo"
+                alt="syncs logo"
+              />
+              <div class="data-button-data" id="syncs-button-data"></div>
+            </div>
+
+            <div class="data-button-summary" id="syncs-button-summary"></div>
+          </div>
+        </div>
+        <div id="right-data-chart"></div>
+      </div>
     </div>
 
     <script type="module" src="../scripts/home.js"></script>

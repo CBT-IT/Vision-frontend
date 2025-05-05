@@ -27,9 +27,15 @@ img {
 }
 #data-view {
   margin-top: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   background-color: var(--primary-color);
   flex-grow: 1;
   border-radius: var(--primary-border-radius);
+}
+#left-data-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
