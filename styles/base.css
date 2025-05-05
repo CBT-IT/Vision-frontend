@@ -48,7 +48,6 @@ body {
 #page-title,
 #user-name,
 #nav-date {
-  font-weight: bold;
   color: var(--cbt-blue);
   border-right: 2px solid black;
   padding-right: 10px;
