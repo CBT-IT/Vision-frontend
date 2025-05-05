@@ -6,6 +6,8 @@ import {
   getPluginUseCount,
   getPluginUseToday,
   getUserCount,
+  getActiveUsersCount,
+  getActivityChartData,
   getSessionsInfo,
   getSyncInfo,
   getSyncInfoCount,
@@ -66,6 +68,8 @@ async function updatePage() {
   await populateSyncsCard();
   await populatePluginCard();
   await populateUserCard();
+  await populateActiveUsersCard();
+  await populateActivityChart();
 }
 async function populateSessionsCard() {
   const sessionsToday = await getSessionsInfoToday(token);
@@ -108,6 +112,55 @@ async function populateUserCard() {
   const userCount = await getUserCount(token);
   const user_button_data = document.getElementById("user-button-data");
   user_button_data.textContent = userCount.count;
+}
+async function populateActiveUsersCard() {
+  const activeUserCount = await getActiveUsersCount(token);
+  const active_user_button_data = document.getElementById(
+    "active-user-button-data"
+  );
+  active_user_button_data.textContent = activeUserCount.count;
+}
+async function populateActivityChart() {
+  const chartSpace = document.getElementById("right-data-chart");
+  // Clear any existing canvas if you're refreshing the chart
+  chartSpace.innerHTML = `<canvas id="activityChart"></canvas>`;
+
+  const data = await getActivityChartData(token);
+  console.log(data);
+
+  const labels = Object.keys(data); // dates
+  const usageCounts = Object.values(data); // session counts
+
+  const ctx = document.getElementById("activityChart").getContext("2d");
+
+  new Chart(ctx, {
+    type: "line", // or "bar" if you prefer
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Entries",
+          data: usageCounts,
+          borderColor: "#00bac6",
+          backgroundColor: "rgba(0, 186, 198, 0.2)",
+          fill: true,
+          tension: 0,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: { display: false },
+        },
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: "Usage Count" },
+        },
+      },
+    },
+  });
 }
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

@@ -159,3 +159,29 @@ export async function getViewBookmarks(token) {
   console.log(data);
   return data.count;
 }
+export async function getActiveUsersCount(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/active-users-count",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
+}
+export async function getActivityChartData(token) {
+  const res = await fetch(
+    "https://vision-backend-32ia.onrender.com/activity-chart-data",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
+}
