@@ -44,84 +44,148 @@
   overflow-y: auto;
   border: 4px solid var(--cbt-blue);
 }
-table {
+#sessions-table {
   border-collapse: collapse;
   table-layout: fixed;
   width: 100%;
 }
-thead {
+#sessions-table thead {
   width: 100%;
   background-color: var(--secondary-color);
   text-wrap: wrap;
   word-break: normal;
 }
-tbody {
+#sessions-table tbody {
   max-height: none;
   overflow-y: visible;
 }
-th,
-td {
+#sessions-table th,
+#sessions-table td {
   padding: 10px;
   text-align: left;
   box-sizing: border-box;
 }
-thead th {
+#sessions-table thead th {
   position: sticky;
   top: 0;
   background-color: var(--primary-color);
   z-index: 2;
 }
-th:nth-child(1),
-td:nth-child(1) {
+#sessions-table th:nth-child(1),
+#sessions-table td:nth-child(1) {
   width: 4%;
 }
-th:nth-child(2),
-td:nth-child(2) {
+#sessions-table th:nth-child(2),
+#sessions-table td:nth-child(2) {
   width: 6%;
 }
-th:nth-child(3),
-td:nth-child(3) {
+#sessions-table th:nth-child(3),
+#sessions-table td:nth-child(3) {
   width: 25%;
   word-break: break-all;
 }
-th:nth-child(4),
-td:nth-child(4) {
+#sessions-table th:nth-child(4),
+#sessions-table td:nth-child(4) {
   width: 15%;
   word-break: break-all;
 }
-th:nth-child(5),
-td:nth-child(5) {
+#sessions-table th:nth-child(5),
+#sessions-table td:nth-child(5) {
   width: 10%;
+  text-align: right;
 }
-th:nth-child(6),
-td:nth-child(6) {
+#sessions-table th:nth-child(6),
+#sessions-table td:nth-child(6) {
   width: 4%;
+  text-align: right;
 }
-th:nth-child(7),
-td:nth-child(7) {
+#sessions-table th:nth-child(7),
+#sessions-table td:nth-child(7) {
   width: 4%;
+  text-align: right;
 }
-th:nth-child(8),
-td:nth-child(8) {
+#sessions-table th:nth-child(8),
+#sessions-table td:nth-child(8) {
   width: 6%;
+  text-align: right;
 }
-th:nth-child(9),
-td:nth-child(9) {
+#sessions-table th:nth-child(9),
+#sessions-table td:nth-child(9) {
   width: 5%;
+  text-align: right;
 }
-th:nth-child(10),
-td:nth-child(10) {
+#sessions-table th:nth-child(10),
+#sessions-table td:nth-child(10) {
   width: 5%;
+  text-align: right;
 }
-th:nth-child(11),
-td:nth-child(11) {
+#sessions-table th:nth-child(11),
+#sessions-table td:nth-child(11) {
   width: 5%;
+  text-align: right;
 }
-th:nth-child(12),
-td:nth-child(12) {
-  width: 5%;
+#sessions-table th:nth-child(12),
+#sessions-table td:nth-child(12) {
+  width: 3%;
+  text-align: right;
 }
-tr:hover {
+#sessions-table tr:hover {
   cursor: pointer;
   background-color: var(--cbt-blue-hover);
+}
+
+#session-overlay {
+  font-family: var(--font-secondary);
+  position: fixed;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.562); /* 80% dark */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+#overlay-box {
+  border: 4px solid var(--cbt-blue);
+  width: 600px;
+  height: 750px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+}
+#overlay-contents {
+  display: flex;
+  flex-direction: row;
+}
+#overlay-session-contents {
+  word-break: break-all;
+}
+
+#session-detail-table td:nth-child(1) {
+  width: 150px;
+  background-color: var(--primary-color);
+  font-weight: bold;
+}
+#session-detail-table td:nth-child(2) {
+  width: 200px;
+  text-align: left;
+}
+#session-detail-table td {
+  padding: 3px;
+}
+#session-detail-table caption {
+  font-weight: bold;
+  padding: 5px;
+}
+#close-button {
+  margin-top: 10px;
+  width: 70px;
+  text-align: center;
 }

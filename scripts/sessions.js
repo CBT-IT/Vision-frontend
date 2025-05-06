@@ -1,6 +1,8 @@
 import {
   getSessionsCount,
   getUserMappingsByEmail,
+  getUserMappingsByAutodesk,
+  getSyncsInSession,
   getSessionsInfoToday,
   getSyncInfoToday,
   getPluginUseCount,
@@ -85,13 +87,16 @@ async function populateFiltersTab() {
 }
 
 async function populateSessionsTable() {
+  const mapObject = await getUserMappingsByAutodesk(token);
+  const userMappings = mapObject.userMappings;
   const sessions = await getSessionsInfo(token);
   const sessionsArray = sessions.sessionsInfo.reverse();
-  console.log(sessionsArray);
+  // console.log(sessionsArray);
   const table_container = document.getElementById("table-container");
   table_container.innerHTML = "";
   //header
   const sessionTable = document.createElement("table");
+  sessionTable.id = "sessions-table";
   const tableHead = document.createElement("thead");
   const headers = [
     "#",
@@ -100,7 +105,7 @@ async function populateSessionsTable() {
     "Project Name",
     "User",
     "Revit Version",
-    "FileSize (mb)",
+    "File Size",
     "Start Time",
     "Opening Duration",
     "End Time",
@@ -131,7 +136,7 @@ async function populateSessionsTable() {
       session.date,
       session.fileName,
       session.projectName,
-      session.autodeskUserName,
+      userMappings[session.autodeskUserName],
       session.revitVersion,
       session.fileSize == 0 ? "" : session.fileSize,
       openingStartTime,
@@ -144,6 +149,11 @@ async function populateSessionsTable() {
       const cell = document.createElement("td");
       cell.textContent = data;
       tableRow.appendChild(cell);
+    });
+    tableRow.addEventListener("click", () => {
+      tableRow.style.backgroundColor = "var(--cbt-blue)";
+      const index = tableRow.childNodes[0].textContent;
+      showDetails(sessionsArray, index, tableRow);
     });
     tableBody.appendChild(tableRow);
     count++;
@@ -165,4 +175,76 @@ function parseStartEndTime(time) {
   return cleanTime;
 }
 
+async function showDetails(sessions, index, row) {
+  const session = sessions[index - 1];
+  const overlay = document.getElementById("session-overlay");
+  if (overlay.style.display !== "flex") {
+    overlay.style.display = "flex";
+  }
+
+  populateSessionDetails(session);
+  await populateSessionSyncDetails(session);
+
+  const close_button = document.getElementById("close-button");
+  close_button.addEventListener("click", () => {
+    overlay.style.display = "none";
+    row.style.backgroundColor = "white";
+  });
+}
+
+function populateSessionDetails(session) {
+  const overlay_session_contents = document.getElementById(
+    "overlay-session-contents"
+  );
+  const table = document.createElement("table");
+  table.id = "session-detail-table";
+  const caption = document.createElement("caption");
+  caption.textContent = "Session Details";
+  table.appendChild(caption);
+  const column1 = [
+    "date",
+    "openingStartTime",
+    "openingEndTime",
+    "openingDuration",
+    "autodeskUserName",
+    "deviceUserName",
+    "deviceName",
+    "networkInfo",
+    "userIP",
+    "source",
+    "projectName",
+    "fileName",
+    "filePath",
+    "fileSize",
+    "localFile",
+    "deviceFreeSpace",
+    "revitVersion",
+    "cbtToolsVersion",
+    "uniqueId",
+    "closingTime",
+    "sessionDuration",
+    "crash",
+  ];
+
+  const column2 = column1.map((key) => session[key]);
+
+  // Optional: populate the overlay with labels and values
+  overlay_session_contents.innerHTML = ""; // clear previous content
+  for (let i = 0; i < column1.length; i++) {
+    const row = document.createElement("tr");
+    const data1 = document.createElement("td");
+    data1.textContent = column1[i];
+    const data2 = document.createElement("td");
+    data2.textContent = column2[i];
+    row.appendChild(data1);
+    row.appendChild(data2);
+    table.appendChild(row);
+  }
+  overlay_session_contents.appendChild(table);
+}
+
+async function populateSessionSyncDetails(session) {
+  const syncInSession = await getSyncsInSession(token, session._id);
+  console.log(syncInSession);
+}
 initHomepage();

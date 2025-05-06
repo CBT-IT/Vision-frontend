@@ -211,3 +211,29 @@ export async function getModelsTrackedCount(token) {
   const data = await res.json();
   return data;
 }
+export async function getUserMappingsByAutodesk(token) {
+  const res = await fetch(
+    `https://vision-backend-32ia.onrender.com/user-mappings-by-autodesk`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
+}
+export async function getSyncsInSession(token, id) {
+  const res = await fetch(
+    `https://vision-backend-32ia.onrender.com/syncs-in-session?sessionId=${id}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
+}

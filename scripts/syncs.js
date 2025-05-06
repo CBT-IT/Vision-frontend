@@ -1,6 +1,7 @@
 import {
   getSessionsCount,
   getUserMappingsByEmail,
+  getUserMappingsByAutodesk,
   getSessionsInfoToday,
   getSyncInfoToday,
   getPluginUseCount,
@@ -85,6 +86,8 @@ async function populateFiltersTab() {
 }
 
 async function populateSyncsTable() {
+  const mapObject = await getUserMappingsByAutodesk(token);
+  const userMappings = mapObject.userMappings;
   const syncs = await getSyncInfo(token);
   const syncsArray = syncs.syncInfo.reverse();
   console.log(syncsArray);
@@ -123,7 +126,7 @@ async function populateSyncsTable() {
         parseDate(sync.date),
         sync.fileName,
         sync.filePath,
-        sync.autodeskUserName,
+        userMappings[sync.autodeskUserName],
         syncStartTime,
         parseDuration(sync.gap),
         parseDuration(sync.totalDuration),
