@@ -9,7 +9,7 @@ export async function getSessionsInfo(token) {
     }
   );
   const data = await res.json();
-  return data.count;
+  return data;
 }
 export async function getUserCount(token) {
   const res = await fetch(
@@ -62,7 +62,7 @@ export async function getSyncInfo(token) {
     }
   );
   const data = await res.json();
-  return data.count;
+  return data;
 }
 export async function getSyncInfoCount(token) {
   const res = await fetch(

@@ -111,6 +111,11 @@ async function populateSessionsCard() {
   );
   sessions_button_data.textContent = sessionsCount;
   sessions_button_summary.textContent = `+${sessionsTodayCount}`;
+  const sessionsCard = document.getElementById("sessions-button");
+  sessionsCard.addEventListener("click", () => {
+    console.log("Sessions Card Clicked");
+    window.location.href = "/pages/sessions.html";
+  });
 }
 async function populateSyncsCard() {
   const syncCount = await getSyncInfoCount(token);
@@ -121,10 +126,10 @@ async function populateSyncsCard() {
   const syncs_button_summary = document.getElementById("syncs-button-summary");
   syncs_button_summary.textContent = `+${syncInfoToday.syncInfo.length}`;
 
-  const sessionsCard = document.getElementById("sessions-button");
-  sessionsCard.addEventListener("click", () => {
-    console.log("Sessions Card Clicked");
-    window.location.href = "/pages/sessions.html";
+  const syncsCard = document.getElementById("syncs-button");
+  syncsCard.addEventListener("click", () => {
+    console.log("Syncs Card Clicked");
+    window.location.href = "/pages/syncs.html";
   });
 }
 async function populatePluginCard() {

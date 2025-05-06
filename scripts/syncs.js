@@ -45,7 +45,7 @@ async function updatePage() {
   await import("../scripts/navbar.js");
 
   const page_title = document.getElementById("page-title");
-  page_title.innerHTML = "Sessions<br>Page";
+  page_title.innerHTML = "Syncs<br>Page";
 
   const back_button = document.getElementById("back-button");
   back_button.disabled = false;
@@ -68,7 +68,7 @@ async function updatePage() {
   });
 
   await populateFiltersTab();
-  await populateSessionsTable();
+  await populateSyncsTable();
   //   await populateSessionsCard();
   //   await populateSyncsCard();
   //   await populatePluginCard();
@@ -79,33 +79,29 @@ function sleep(ms) {
 }
 
 async function populateFiltersTab() {
-  const count = await getSessionsCount(token);
-  const sessions_count = document.getElementById("sessions-count-data");
-  sessions_count.textContent = count;
+  const count = await getSyncInfoCount(token);
+  const syncs_count = document.getElementById("syncs-count-data");
+  syncs_count.textContent = count;
 }
 
-async function populateSessionsTable() {
-  const sessions = await getSessionsInfo(token);
-  const sessionsArray = sessions.sessionsInfo.reverse();
-  console.log(sessionsArray);
+async function populateSyncsTable() {
+  const syncs = await getSyncInfo(token);
+  const syncsArray = syncs.syncInfo.reverse();
+  console.log(syncsArray);
   const table_container = document.getElementById("table-container");
   table_container.innerHTML = "";
   //header
-  const sessionTable = document.createElement("table");
+  const syncsTable = document.createElement("table");
   const tableHead = document.createElement("thead");
   const headers = [
     "#",
     "Date",
     "File Name",
-    "Project Name",
+    "File Path",
     "User",
-    "Revit Version",
-    "FileSize (mb)",
     "Start Time",
-    "Opening Duration",
-    "End Time",
-    "Session Duration",
-    "Crash",
+    "Gap",
+    "Duration",
   ];
   const headerRow = document.createElement("tr");
   headers.forEach((header) => {
@@ -117,40 +113,40 @@ async function populateSessionsTable() {
   //body
   const tableBody = document.createElement("tbody");
   let count = 1;
-  sessionsArray.forEach((session) => {
-    const tableRow = document.createElement("tr");
-    //start time
-    const openingStartTime = parseStartEndTime(session.openingStartTime);
-    //closing time
-    let closingTime = "";
-    if (session.closingTime != "") {
-      closingTime = parseStartEndTime(session.closingTime);
+  for (const sync of syncsArray) {
+    try {
+      const tableRow = document.createElement("tr");
+      //start time
+      const syncStartTime = parseStartEndTime(sync.syncStartTime);
+      const rowData = [
+        count,
+        parseDate(sync.date),
+        sync.fileName,
+        sync.filePath,
+        sync.autodeskUserName,
+        syncStartTime,
+        parseDuration(sync.gap),
+        parseDuration(sync.totalDuration),
+      ];
+      rowData.forEach((data) => {
+        const cell = document.createElement("td");
+        cell.textContent = data;
+        tableRow.appendChild(cell);
+      });
+      tableBody.appendChild(tableRow);
+      count++;
+    } catch {
+      continue;
     }
-    const rowData = [
-      count,
-      session.date,
-      session.fileName,
-      session.projectName,
-      session.autodeskUserName,
-      session.revitVersion,
-      session.fileSize == 0 ? "" : session.fileSize,
-      openingStartTime,
-      parseDuration(session.openingDuration),
-      closingTime,
-      parseDuration(session.sessionDuration),
-      session.crash ? "Yes" : "",
-    ];
-    rowData.forEach((data) => {
-      const cell = document.createElement("td");
-      cell.textContent = data;
-      tableRow.appendChild(cell);
-    });
-    tableBody.appendChild(tableRow);
-    count++;
-  });
-  sessionTable.appendChild(tableHead);
-  sessionTable.appendChild(tableBody);
-  table_container.appendChild(sessionTable);
+  }
+  syncsTable.appendChild(tableHead);
+  syncsTable.appendChild(tableBody);
+  table_container.appendChild(syncsTable);
+}
+
+function parseDate(date) {
+  const [datePart, ,] = date.split(" ");
+  return datePart;
 }
 
 function parseDuration(duration) {

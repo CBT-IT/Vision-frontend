@@ -23,14 +23,14 @@
   margin-bottom: 10px;
   padding: 15px;
 }
-#sessions-count {
+#syncs-count {
   height: 100%;
   display: flex;
   flex-direction: column;
   padding-right: 10px;
   border-right: 4px solid var(--cbt-blue);
 }
-#sessions-count-data {
+#syncs-count-data {
   font-size: 24px;
   font-weight: bold;
   color: var(--cbt-blue);
@@ -73,25 +73,26 @@ thead th {
 }
 th:nth-child(1),
 td:nth-child(1) {
-  width: 4%;
+  width: 2%;
 }
 th:nth-child(2),
 td:nth-child(2) {
-  width: 6%;
+  width: 4%;
 }
 th:nth-child(3),
 td:nth-child(3) {
-  width: 25%;
+  width: 15%;
   word-break: break-all;
 }
 th:nth-child(4),
 td:nth-child(4) {
-  width: 15%;
+  width: 35%;
   word-break: break-all;
 }
 th:nth-child(5),
 td:nth-child(5) {
-  width: 10%;
+  width: 8%;
+  word-break: normal;
 }
 th:nth-child(6),
 td:nth-child(6) {
@@ -104,22 +105,6 @@ td:nth-child(7) {
 th:nth-child(8),
 td:nth-child(8) {
   width: 6%;
-}
-th:nth-child(9),
-td:nth-child(9) {
-  width: 5%;
-}
-th:nth-child(10),
-td:nth-child(10) {
-  width: 5%;
-}
-th:nth-child(11),
-td:nth-child(11) {
-  width: 5%;
-}
-th:nth-child(12),
-td:nth-child(12) {
-  width: 5%;
 }
 tr:hover {
   cursor: pointer;
