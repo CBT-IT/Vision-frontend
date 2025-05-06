@@ -15,16 +15,21 @@
       <div>HOLD ON</div>
       <div id="sub-message">Loading Data</div>
       <img src="../loading.gif" alt="loading" />
-      <div class="loading-steps" id="step1">1.Populating HomePage</div>
-      <div class="loading-steps" id="step2">2.Populating Sessions Card</div>
-      <div class="loading-steps" id="step3">3.Populating Syncs Card</div>
-      <div class="loading-steps" id="step4">4.Populating Plugins Card</div>
-      <div class="loading-steps" id="step5">5.Populating Users Card</div>
-      <div class="loading-steps" id="step6">6.Populating Active Users Card</div>
-      <div class="loading-steps" id="step7">
-        7.Populating Cloud Projects Card
+      <div class="loading-steps" id="step1">1 - Populating HomePage</div>
+      <div class="loading-steps" id="step2">2 - Populating Sessions Card</div>
+      <div class="loading-steps" id="step3">3 - Populating Syncs Card</div>
+      <div class="loading-steps" id="step4">4 - Populating Plugins Card</div>
+      <div class="loading-steps" id="step5">5 - Populating Users Card</div>
+      <div class="loading-steps" id="step6">
+        6 - Populating Active Users Card
       </div>
-      <div class="loading-steps" id="step8">8.Populating Activity Chart</div>
+      <div class="loading-steps" id="step7">
+        7 - Populating Models Tracked Card
+      </div>
+      <div class="loading-steps" id="step8">
+        8 - Populating Cloud Projects Card
+      </div>
+      <div class="loading-steps" id="step9">9 - Populating Activity Chart</div>
     </div>
     <div id="main-container" style="display: none">
       <div id="navbar-placeholder"></div>
@@ -121,15 +126,30 @@
               <div class="data-button-data" id="active-user-button-data"></div>
             </div>
           </div>
+          <div class="data-button" id="models-tracked-button">
+            <div class="data-header-tab">
+              <div class="data-button-header" id="models-tracked-button-header">
+                Models Tracked
+              </div>
+            </div>
+            <div class="button-data-container">
+              <img
+                src="../resources/logos/models.png"
+                class="button-logo"
+                id="models-tracked-button-logo"
+                alt="models-tracked logo"
+              />
+              <div
+                class="data-button-data"
+                id="models-tracked-button-data"
+              ></div>
+            </div>
+          </div>
           <div class="data-button" id="cloud-projects-button">
             <div class="data-header-tab">
               <div class="data-button-header" id="cloud-projects-button-header">
                 Cloud Projects
               </div>
-              <div
-                class="data-button-summary"
-                id="cloud-projects-button-summary"
-              ></div>
             </div>
             <div class="button-data-container">
               <img

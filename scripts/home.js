@@ -9,6 +9,7 @@ import {
   getActiveUsersCount,
   getActivityChartData,
   getCloudProjectsCount,
+  getModelsTrackedCount,
   getSessionsInfo,
   getSyncInfo,
   getSyncInfoCount,
@@ -71,6 +72,7 @@ async function updatePage() {
     step6.classList.remove("loading-steps-ready");
     step7.classList.remove("loading-steps-ready");
     step8.classList.remove("loading-steps-ready");
+    step9.classList.remove("loading-steps-ready");
     initHomepage();
   });
   step1.classList.add("loading-steps-ready");
@@ -90,11 +92,14 @@ async function updatePage() {
   await populateActiveUsersCard();
   step6.classList.add("loading-steps-ready");
   const step7 = document.getElementById("step7");
-  await cloudProjectCard();
+  await populateModelsTrackedCard();
   step7.classList.add("loading-steps-ready");
   const step8 = document.getElementById("step8");
-  await populateActivityChart();
+  await cloudProjectCard();
   step8.classList.add("loading-steps-ready");
+  const step9 = document.getElementById("step9");
+  await populateActivityChart();
+  step9.classList.add("loading-steps-ready");
 }
 async function populateSessionsCard() {
   const sessionsToday = await getSessionsInfoToday(token);
@@ -192,6 +197,13 @@ async function cloudProjectCard() {
     "cloud-projects-button-data"
   );
   cloud_projects_button_data.textContent = count.count;
+}
+async function populateModelsTrackedCard() {
+  const count = await getModelsTrackedCount(token);
+  const models_tracked_button_data = document.getElementById(
+    "models-tracked-button-data"
+  );
+  models_tracked_button_data.textContent = count.count;
 }
 
 function sleep(ms) {
