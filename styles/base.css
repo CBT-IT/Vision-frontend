@@ -124,3 +124,12 @@ button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+.loading-steps {
+  font-size: 12px;
+  font-style: italic;
+  color: gray;
+}
+.loading-steps-ready {
+  color: var(--cbt-blue);
+}

@@ -39,6 +39,7 @@ async function initHomepage() {
 }
 async function updatePage() {
   //add navbar
+  const step1 = document.getElementById("step1");
   const navres = await fetch("/components/navbar.html");
   const navHTML = await navres.text();
   document.getElementById("navbar-placeholder").innerHTML = navHTML;
@@ -62,16 +63,38 @@ async function updatePage() {
   });
 
   document.getElementById("refresh-button").addEventListener("click", () => {
+    step1.classList.remove("loading-steps-ready");
+    step2.classList.remove("loading-steps-ready");
+    step3.classList.remove("loading-steps-ready");
+    step4.classList.remove("loading-steps-ready");
+    step5.classList.remove("loading-steps-ready");
+    step6.classList.remove("loading-steps-ready");
+    step7.classList.remove("loading-steps-ready");
+    step8.classList.remove("loading-steps-ready");
     initHomepage();
   });
-
+  step1.classList.add("loading-steps-ready");
+  const step2 = document.getElementById("step2");
   await populateSessionsCard();
+  step2.classList.add("loading-steps-ready");
+  const step3 = document.getElementById("step3");
   await populateSyncsCard();
+  step3.classList.add("loading-steps-ready");
+  const step4 = document.getElementById("step4");
   await populatePluginCard();
+  step4.classList.add("loading-steps-ready");
+  const step5 = document.getElementById("step5");
   await populateUserCard();
+  step5.classList.add("loading-steps-ready");
+  const step6 = document.getElementById("step6");
   await populateActiveUsersCard();
-  await populateActivityChart();
+  step6.classList.add("loading-steps-ready");
+  const step7 = document.getElementById("step7");
   await cloudProjectCard();
+  step7.classList.add("loading-steps-ready");
+  const step8 = document.getElementById("step8");
+  await populateActivityChart();
+  step8.classList.add("loading-steps-ready");
 }
 async function populateSessionsCard() {
   const sessionsToday = await getSessionsInfoToday(token);
@@ -165,7 +188,10 @@ async function populateActivityChart() {
 }
 async function cloudProjectCard() {
   const count = await getCloudProjectsCount(token);
-  console.log(count);
+  const cloud_projects_button_data = document.getElementById(
+    "cloud-projects-button-data"
+  );
+  cloud_projects_button_data.textContent = count.count;
 }
 
 function sleep(ms) {
