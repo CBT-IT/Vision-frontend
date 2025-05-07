@@ -150,10 +150,10 @@ async function populateSessionsTable() {
       cell.textContent = data;
       tableRow.appendChild(cell);
     });
-    tableRow.addEventListener("click", () => {
+    tableRow.addEventListener("click", async () => {
       tableRow.style.backgroundColor = "var(--cbt-blue)";
       const index = tableRow.childNodes[0].textContent;
-      showDetails(sessionsArray, index, tableRow);
+      await showDetails(sessionsArray, index, tableRow);
     });
     tableBody.appendChild(tableRow);
     count++;
@@ -199,6 +199,7 @@ function populateSessionDetails(session) {
   const table = document.createElement("table");
   table.id = "session-detail-table";
   const caption = document.createElement("caption");
+  caption.classList.add("details-caption");
   caption.textContent = "Session Details";
   table.appendChild(caption);
   const column1 = [
@@ -244,7 +245,48 @@ function populateSessionDetails(session) {
 }
 
 async function populateSessionSyncDetails(session) {
+  const overlay_syncs_content = document.getElementById(
+    "overlay-syncs-contents"
+  );
+  overlay_syncs_content.innerHTML = "";
   const syncInSession = await getSyncsInSession(token, session._id);
-  console.log(syncInSession);
+  const syncs = syncInSession.syncs;
+  console.log(syncs);
+  const syncsTable = document.createElement("table");
+  syncsTable.id = "syncs-in-session-table";
+  const caption = document.createElement("caption");
+  caption.classList.add("details-caption");
+  caption.textContent = `Syncs in Session - ${syncs.length}`;
+  syncsTable.appendChild(caption);
+
+  const headers = ["#", "Time", "Gap", "Duration"];
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  headers.forEach((header) => {
+    const headerData = document.createElement("th");
+    headerData.textContent = header;
+    headerRow.appendChild(headerData);
+  });
+  thead.appendChild(headerRow);
+  syncsTable.appendChild(headerRow);
+
+  let count = 1;
+  syncs.forEach((sync) => {
+    const row = document.createElement("tr");
+    const dataValues = [
+      count,
+      parseStartEndTime(sync.syncStartTime),
+      parseDuration(sync.gap),
+      parseDuration(sync.totalDuration),
+    ];
+    dataValues.forEach((value) => {
+      const data = document.createElement("td");
+      data.textContent = value;
+      row.appendChild(data);
+    });
+    count++;
+    syncsTable.appendChild(row);
+  });
+  overlay_syncs_content.appendChild(syncsTable);
 }
 initHomepage();
