@@ -10,6 +10,7 @@ import {
   getActivityChartData,
   getCloudProjectsCount,
   getModelsTrackedCount,
+  getModelsTracked,
   getSessionsInfo,
   getSyncInfo,
   getSyncInfoCount,
@@ -209,6 +210,13 @@ async function populateModelsTrackedCard() {
     "models-tracked-button-data"
   );
   models_tracked_button_data.textContent = count.count;
+
+  const modelsTrackedCard = document.getElementById("models-tracked-button");
+  modelsTrackedCard.addEventListener("click", async () => {
+    console.log("Models Tracked card clicked");
+    const models = await getModelsTracked(token);
+    console.log(models);
+  });
 }
 
 function sleep(ms) {
