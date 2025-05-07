@@ -214,8 +214,7 @@ async function populateModelsTrackedCard() {
   const modelsTrackedCard = document.getElementById("models-tracked-button");
   modelsTrackedCard.addEventListener("click", async () => {
     console.log("Models Tracked card clicked");
-    const models = await getModelsTracked(token);
-    console.log(models);
+    window.location.href = "/pages/models-tracked.html";
   });
 }
 
