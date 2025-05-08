@@ -86,4 +86,106 @@
   background-color: var(--primary-color);
   border-radius: var(--primary-border-radius);
   margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  text-align: center;
+  font-style: italic;
+}
+#selected-model-data {
+  display: flex;
+  flex-direction: column;
+}
+#selected-model-table-container {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+#selected-model-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  font-size: 14px;
+  overflow-y: auto;
+  height: 300px;
+}
+#selected-model-table thead {
+  width: 100%;
+  background-color: var(--secondary-color);
+  text-wrap: wrap;
+  word-break: normal;
+}
+#selected-model-table th,
+#selected-model-table td {
+  padding: 10px;
+  text-align: left;
+  box-sizing: border-box;
+}
+#selected-model-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 2;
+}
+#selected-model-table th:nth-child(1),
+#selected-model-table td:nth-child(1) {
+  width: 30px;
+  text-align: right;
+}
+#selected-model-table th:nth-child(2),
+#selected-model-table td:nth-child(2) {
+  width: 60px;
+  text-align: right;
+}
+#selected-model-table th:nth-child(3),
+#selected-model-table td:nth-child(3) {
+  width: 60px;
+  text-align: right;
+}
+#selected-model-table th:nth-child(4),
+#selected-model-table td:nth-child(4) {
+  width: 100px;
+  text-align: right;
+}
+#model-table {
+  margin-right: 5px;
+  height: 300px;
+  overflow-y: auto;
+  border: 2px solid var(--cbt-blue);
+  width: 340px;
+  border-collapse: collapse;
+}
+
+#model-session-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 14px;
+  overflow-y: auto;
+  height: 300px;
+}
+#model-session-table thead {
+  width: 100%;
+  background-color: var(--secondary-color);
+  text-wrap: wrap;
+  word-break: normal;
+}
+#model-session-table th,
+#model-session-table td {
+  padding: 10px;
+  text-align: left;
+  box-sizing: border-box;
+}
+#model-session-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 2;
+}
+#session-table {
+  margin-left: 5px;
+  height: 300px;
+  overflow-y: auto;
+  border: 2px solid var(--cbt-blue);
 }
