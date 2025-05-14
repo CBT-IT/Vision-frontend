@@ -15,6 +15,10 @@ import {
 } from "../utility/backendCalls.js";
 
 const token = sessionStorage.getItem("idToken");
+if (!token) {
+  sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
+  window.location.href = "../index.html";
+}
 const user = sessionStorage.getItem("userEmail");
 const loading_screen = document.getElementById("loading-message");
 const main_container = document.getElementById("main-container");

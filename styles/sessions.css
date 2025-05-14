@@ -227,3 +227,64 @@
   width: 100px;
   text-align: right;
 }
+
+#filter-selection-container,
+#filter-dropdown-container {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  padding-right: 10px;
+}
+#filters {
+  font-weight: normal;
+}
+#filter-tab {
+  display: flex;
+  flex-direction: row;
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
+.dropdown {
+  position: relative;
+  width: 800px;
+}
+
+.dropdown-title {
+  padding: 8px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: white;
+  z-index: 2;
+}
+
+.options {
+  position: absolute; /* So it floats above other elements */
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 500px;
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+}
+
+.option {
+  padding: 8px;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.option:hover {
+  background-color: var(--cbt-blue-hover);
+}
+#filter-click {
+  width: 784px;
+}

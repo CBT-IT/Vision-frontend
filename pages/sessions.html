@@ -32,7 +32,70 @@
             <div id="sessions-count-header">Sessions</div>
             <div id="sessions-count-data"></div>
           </div>
-          <div id="filter-tab">Filters coming soon</div>
+          <div id="filter-tab">
+            <div id="filter-selection-container">
+              <div>Filter Type</div>
+              <div id="filters">
+                <form id="filters-form">
+                  <input
+                    type="radio"
+                    name="filter"
+                    id="user-filter-check"
+                    value="user"
+                  />
+                  <label for="user-filter-check">User</label>
+                  <input
+                    type="radio"
+                    name="filter"
+                    id="file-name-check"
+                    value="fileName"
+                  />
+                  <label for="file-name-check">File</label>
+                  <input
+                    type="radio"
+                    name="filter"
+                    id="project-name-check"
+                    value="project"
+                  />
+                  <label for="project-name-check">Project</label>
+                  <input
+                    type="radio"
+                    name="filter"
+                    id="version-filter-check"
+                    value="version"
+                  />
+                  <label for="version-filter-check">Version</label>
+                  <input
+                    type="radio"
+                    name="filter"
+                    id="crash-filter-check"
+                    value="crash"
+                  />
+                  <label for="crash-filter-check">Crash</label>
+                  <input
+                    type="radio"
+                    name="filter"
+                    id="clear-filter-check"
+                    value="clear"
+                  />
+                  <label for="clear-filter-check">Clear Filters</label>
+                </form>
+              </div>
+            </div>
+            <div id="filter-dropdown-container">
+              <div>Filter Value</div>
+              <div class="dropdown" id="filter-dropdown">
+                <input
+                  type="text"
+                  class="dropdown-title"
+                  placeholder="Select filter value"
+                  id="filter-click"
+                  readonly
+                />
+                <div class="options"></div>
+              </div>
+            </div>
+          </div>
         </div>
         <div id="table-container"></div>
       </div>

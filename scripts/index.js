@@ -34,7 +34,10 @@ sign_in_form.addEventListener("submit", async (e) => {
     // 🔐 Save to sessionStorage
     sessionStorage.setItem("userEmail", user.email);
     sessionStorage.setItem("idToken", token);
-    window.location.href = "pages/home.html";
+    const redirectPath =
+      sessionStorage.getItem("redirectAfterLogin") || "pages/home.html";
+    sessionStorage.removeItem("redirectAfterLogin");
+    window.location.href = redirectPath;
   } catch (err) {
     alert("Login Failed");
   }

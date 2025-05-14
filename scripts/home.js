@@ -20,6 +20,7 @@ import {
 
 const token = sessionStorage.getItem("idToken");
 const user = sessionStorage.getItem("userEmail");
+
 const loading_screen = document.getElementById("loading-message");
 const main_container = document.getElementById("main-container");
 

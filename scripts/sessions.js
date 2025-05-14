@@ -16,10 +16,18 @@ import {
 } from "../utility/backendCalls.js";
 
 const token = sessionStorage.getItem("idToken");
+if (!token) {
+  sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
+  window.location.href = "../index.html";
+}
 const user = sessionStorage.getItem("userEmail");
 const loading_screen = document.getElementById("loading-message");
 const main_container = document.getElementById("main-container");
-
+const mapObject = await getUserMappingsByAutodesk(token);
+let userMappings = mapObject.userMappings;
+let sessionResponse = await getSessionsInfo(token);
+const sessions = sessionResponse.sessionsInfo.reverse();
+let sessionCount = await getSessionsCount(token);
 async function initHomepage() {
   if (!token) {
     window.location.href = "../index.html";
@@ -66,31 +74,176 @@ async function updatePage() {
   });
 
   document.getElementById("refresh-button").addEventListener("click", () => {
+    clearRadios();
     initHomepage();
   });
 
-  await populateFiltersTab();
-  await populateSessionsTable();
+  updateSessionCount(sessionCount);
+  populateSessionsTable(sessions);
+
+  const filter_dropdown_container = document.getElementById(
+    "filter-dropdown-container"
+  );
+  filter_dropdown_container.classList.add("disabled");
+  clearDropdown();
+  const filters_form = document.getElementById("filters-form");
+  filters_form.addEventListener("change", (event) => {
+    if (event.target.name === "filter") {
+      const checkedValue = event.target.value;
+      if (checkedValue == "clear") {
+        clearFilters(filter_dropdown_container);
+        clearRadios();
+        clearDropdown();
+        updateSessionCount(sessionCount);
+        populateSessionsTable(sessions);
+      } else {
+        filter_dropdown_container.classList.remove("disabled");
+        if (checkedValue == "user") {
+          populateUserFilters();
+        } else if (checkedValue == "fileName") {
+          populateFileFilters();
+        } else if (checkedValue == "project") {
+          populateProjectFilters();
+        } else if (checkedValue == "version") {
+          populateVersionFilters();
+        } else if (checkedValue == "crash") {
+          populateCrashFilters();
+        }
+      }
+    }
+  });
+  const dropdownTitle = document.querySelector(
+    "#filter-dropdown .dropdown-title"
+  );
+  const optionsContainer = document.querySelector("#filter-dropdown .options");
+
+  dropdownTitle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isVisible = optionsContainer.style.display === "flex";
+    optionsContainer.style.display = isVisible ? "none" : "flex";
+  });
+
+  // Close dropdown if clicked outside
+  document.addEventListener("click", () => {
+    optionsContainer.style.display = "none";
+  });
+
+  optionsContainer.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
   //   await populateSessionsCard();
   //   await populateSyncsCard();
   //   await populatePluginCard();
   //   await populateUserCard();
 }
+
+function populateUserFilters() {
+  const users = [
+    ...new Set(
+      sessions
+        .map((session) => userMappings[session.autodeskUserName])
+        .filter(Boolean)
+    ),
+  ];
+
+  const dropdown = document.getElementById("filter-dropdown");
+  const optionsContainer = dropdown.querySelector(".options");
+  const input = dropdown.querySelector(".dropdown-title");
+
+  // Clear previous
+  optionsContainer.innerHTML = "";
+  input.value = "";
+
+  users.forEach((user) => {
+    const option = document.createElement("div");
+    option.classList.add("option");
+    option.textContent = user;
+
+    option.addEventListener("click", () => {
+      input.value = user;
+      optionsContainer.style.display = "none";
+      filterTable_User(user);
+    });
+
+    optionsContainer.appendChild(option);
+  });
+}
+function populateFileFilters() {
+  const files = [
+    ...new Set(sessions.map((session) => session.fileName).filter(Boolean)),
+  ];
+
+  const dropdown = document.getElementById("filter-dropdown");
+  const optionsContainer = dropdown.querySelector(".options");
+  const input = dropdown.querySelector(".dropdown-title");
+
+  // Clear previous
+  optionsContainer.innerHTML = "";
+  input.value = "";
+
+  files.forEach((file) => {
+    const option = document.createElement("div");
+    option.classList.add("option");
+    option.textContent = file;
+
+    option.addEventListener("click", () => {
+      input.value = file;
+      optionsContainer.style.display = "none";
+      filterTable_File(file);
+    });
+
+    optionsContainer.appendChild(option);
+  });
+}
+
+function populateProjectFilters() {
+  console.log("Project Filter Selected");
+}
+function populateVersionFilters() {
+  console.log("Version Filter Selected");
+}
+function populateCrashFilters() {
+  console.log("Crash Filter Selected");
+}
+function filterTable_User(user) {
+  const sessionsArray = sessions;
+  const filtered = sessionsArray.filter(
+    (session) => userMappings[session.autodeskUserName] === user
+  );
+  populateSessionsTable(filtered);
+  updateSessionCount(filtered.length);
+}
+function filterTable_File(file) {
+  const sessionsArray = sessions;
+  const filtered = sessionsArray.filter((session) => session.fileName === file);
+  populateSessionsTable(filtered);
+  updateSessionCount(filtered.length);
+}
+function clearRadios() {
+  const radios = document.querySelectorAll('input[name="filter"]');
+  radios.forEach((radio) => (radio.checked = false));
+}
+function clearFilters(filterContainer) {
+  filterContainer.classList.add("disabled");
+}
+function clearDropdown() {
+  const input = document.querySelector("#filter-dropdown .dropdown-title");
+  const optionsContainer = document.querySelector("#filter-dropdown .options");
+
+  input.value = "";
+  optionsContainer.innerHTML = "";
+  optionsContainer.style.display = "none";
+}
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-
-async function populateFiltersTab() {
-  const count = await getSessionsCount(token);
+function updateSessionCount(count) {
   const sessions_count = document.getElementById("sessions-count-data");
   sessions_count.textContent = count;
 }
-
-async function populateSessionsTable() {
-  const mapObject = await getUserMappingsByAutodesk(token);
-  const userMappings = mapObject.userMappings;
-  const sessions = await getSessionsInfo(token);
-  const sessionsArray = sessions.sessionsInfo.reverse();
+function populateSessionsTable(dataList) {
   // console.log(sessionsArray);
   const table_container = document.getElementById("table-container");
   table_container.innerHTML = "";
@@ -122,7 +275,7 @@ async function populateSessionsTable() {
   //body
   const tableBody = document.createElement("tbody");
   let count = 1;
-  sessionsArray.forEach((session) => {
+  dataList.forEach((session) => {
     const tableRow = document.createElement("tr");
     //start time
     const openingStartTime = parseStartEndTime(session.openingStartTime);
