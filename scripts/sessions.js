@@ -202,9 +202,10 @@ function populateUserFilters() {
   input.value = "";
 
   users.forEach((user) => {
+    const count = getUsersCount(user);
     const option = document.createElement("div");
     option.classList.add("option");
-    option.textContent = user;
+    option.textContent = `${count} -- ${user}`;
 
     option.addEventListener("click", () => {
       input.value = user;
@@ -214,6 +215,13 @@ function populateUserFilters() {
 
     optionsContainer.appendChild(option);
   });
+}
+function getUsersCount(user) {
+  return sessions.reduce(
+    (count, session) =>
+      count + (userMappings[session.autodeskUserName] === user ? 1 : 0),
+    0
+  );
 }
 function populateFileFilters() {
   const files = [
@@ -229,9 +237,10 @@ function populateFileFilters() {
   input.value = "";
 
   files.forEach((file) => {
+    const count = getFileCount(file);
     const option = document.createElement("div");
     option.classList.add("option");
-    option.textContent = file;
+    option.textContent = `${count} -- ${file}`;
 
     option.addEventListener("click", () => {
       input.value = file;
@@ -241,6 +250,12 @@ function populateFileFilters() {
 
     optionsContainer.appendChild(option);
   });
+}
+function getFileCount(file) {
+  return sessions.reduce(
+    (count, session) => count + (session.fileName === file ? 1 : 0),
+    0
+  );
 }
 function populateProjectFilters() {
   const projects = [
@@ -256,9 +271,10 @@ function populateProjectFilters() {
   input.value = "";
 
   projects.forEach((project) => {
+    const count = getProjectCount(project);
     const option = document.createElement("div");
     option.classList.add("option");
-    option.textContent = project;
+    option.textContent = `${count} -- ${project}`;
 
     option.addEventListener("click", () => {
       input.value = project;
@@ -268,6 +284,12 @@ function populateProjectFilters() {
 
     optionsContainer.appendChild(option);
   });
+}
+function getProjectCount(project) {
+  return sessions.reduce(
+    (count, session) => count + (session.projectName === project ? 1 : 0),
+    0
+  );
 }
 function populateVersionFilters() {
   const versions = [
@@ -283,9 +305,10 @@ function populateVersionFilters() {
   input.value = "";
 
   versions.forEach((version) => {
+    const count = getVersionCount(version);
     const option = document.createElement("div");
     option.classList.add("option");
-    option.textContent = version;
+    option.textContent = `${count} -- ${version}`;
 
     option.addEventListener("click", () => {
       input.value = version;
@@ -295,6 +318,12 @@ function populateVersionFilters() {
 
     optionsContainer.appendChild(option);
   });
+}
+function getVersionCount(version) {
+  return sessions.reduce(
+    (count, session) => count + (session.revitVersion === version ? 1 : 0),
+    0
+  );
 }
 function populateCrashFilters() {
   const filtered = sessions.filter((session) => session.crash);
