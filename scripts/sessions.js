@@ -24,9 +24,15 @@ const loading_screen = document.getElementById("loading-message");
 const main_container = document.getElementById("main-container");
 const mapObject = await getUserMappingsByAutodesk(token);
 let userMappings = mapObject.userMappings;
-let sessionResponse = await getSessionsInfo(token);
-const sessions = sessionResponse.sessionsInfo.reverse();
-let sessionCount = await getSessionsCount(token);
+
+let sessions, sessionCount;
+await getSessions();
+async function getSessions() {
+  let sessionResponse = await getSessionsInfo(token);
+  sessions = sessionResponse.sessionsInfo.reverse();
+  sessionCount = await getSessionsCount(token);
+}
+
 async function initHomepage() {
   if (!token) {
     window.location.href = "../index.html";
@@ -72,6 +78,7 @@ async function updatePage() {
   });
 
   document.getElementById("refresh-button").addEventListener("click", () => {
+    getSessions();
     clearRadios();
     initHomepage();
   });
