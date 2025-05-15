@@ -338,30 +338,26 @@ function populateCrashFilters() {
   updateSessionCount(filtered.length);
 }
 function filterTable_User(user) {
-  const sessionsArray = sessions;
-  const filtered = sessionsArray.filter(
+  const filtered = sessions.filter(
     (session) => userMappings[session.autodeskUserName] === user
   );
   populateSessionsTable(filtered);
   updateSessionCount(filtered.length);
 }
 function filterTable_File(file) {
-  const sessionsArray = sessions;
-  const filtered = sessionsArray.filter((session) => session.fileName === file);
+  const filtered = sessions.filter((session) => session.fileName === file);
   populateSessionsTable(filtered);
   updateSessionCount(filtered.length);
 }
 function filterTable_Project(project) {
-  const sessionsArray = sessions;
-  const filtered = sessionsArray.filter(
+  const filtered = sessions.filter(
     (session) => session.projectName === project
   );
   populateSessionsTable(filtered);
   updateSessionCount(filtered.length);
 }
 function filterTable_Version(version) {
-  const sessionsArray = sessions;
-  const filtered = sessionsArray.filter(
+  const filtered = sessions.filter(
     (session) => session.revitVersion === version
   );
   populateSessionsTable(filtered);
@@ -390,7 +386,6 @@ function updateSessionCount(count) {
   sessions_count.textContent = count;
 }
 function populateSessionsTable(dataList) {
-  // console.log(sessionsArray);
   const table_container = document.getElementById("table-container");
   table_container.innerHTML = "";
   //header
@@ -452,7 +447,7 @@ function populateSessionsTable(dataList) {
     tableRow.addEventListener("click", async () => {
       tableRow.style.backgroundColor = "var(--cbt-blue)";
       const index = tableRow.childNodes[0].textContent;
-      await showDetails(sessionsArray, index, tableRow);
+      await showDetails(sessions, index, tableRow);
     });
     tableBody.appendChild(tableRow);
     count++;
