@@ -16,7 +16,6 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  align-items: center;
   height: 10%;
   background-color: var(--primary-color);
   border-radius: 10px;
@@ -38,6 +37,7 @@
 #filter-tab {
   padding-left: 10px;
   font-size: 24px;
+  border-right: 4px solid var(--cbt-blue);
 }
 #table-container {
   height: 90%;
@@ -242,6 +242,7 @@
 #filter-tab {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 .disabled {
   pointer-events: none;
@@ -249,7 +250,7 @@
 }
 .dropdown {
   position: relative;
-  width: 800px;
+  width: 700px;
 }
 
 .dropdown-title {
@@ -286,5 +287,21 @@
   background-color: var(--cbt-blue-hover);
 }
 #filter-click {
-  width: 784px;
+  width: 684px;
+}
+#duration-tab {
+  font-weight: bold;
+  font-size: 14px;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#calenders {
+  display: flex;
+  flex-direction: row;
+  font-weight: normal;
+  gap: 10px;
+  padding-top: 5px;
+  align-items: center;
 }

@@ -134,3 +134,12 @@ button:disabled {
 .loading-steps-ready {
   color: var(--cbt-blue);
 }
+.secondary-button {
+  padding: 5px;
+  border: 2px solid gray;
+  background-color: lightgray;
+}
+.secondary-button:hover {
+  cursor: pointer;
+  border: 2px solid var(--cbt-blue);
+}

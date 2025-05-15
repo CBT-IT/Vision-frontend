@@ -14,7 +14,6 @@ import {
   getPluginUse,
   getViewBookmarks,
 } from "../utility/backendCalls.js";
-
 const token = sessionStorage.getItem("idToken");
 if (!token) {
   sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
@@ -45,7 +44,6 @@ async function initHomepage() {
     alert("Error Loading: " + err.message);
   }
 }
-
 async function updatePage() {
   //add navbar
   const navres = await fetch("/components/navbar.html");
@@ -80,6 +78,7 @@ async function updatePage() {
 
   updateSessionCount(sessionCount);
   populateSessionsTable(sessions);
+  updateCalenderFilter();
 
   const filter_dropdown_container = document.getElementById(
     "filter-dropdown-container"
@@ -94,9 +93,11 @@ async function updatePage() {
         clearFilters(filter_dropdown_container);
         clearRadios();
         clearDropdown();
+        clearCalenderFilter();
         updateSessionCount(sessionCount);
         populateSessionsTable(sessions);
       } else {
+        clearCalenderFilter();
         filter_dropdown_container.classList.remove("disabled");
         if (checkedValue == "user") {
           populateUserFilters();
@@ -107,6 +108,7 @@ async function updatePage() {
         } else if (checkedValue == "version") {
           populateVersionFilters();
         } else if (checkedValue == "crash") {
+          filter_dropdown_container.classList.add("disabled");
           populateCrashFilters();
         }
       }
@@ -131,13 +133,57 @@ async function updatePage() {
   optionsContainer.addEventListener("click", (e) => {
     e.stopPropagation();
   });
-
-  //   await populateSessionsCard();
-  //   await populateSyncsCard();
-  //   await populatePluginCard();
-  //   await populateUserCard();
 }
-
+function updateCalenderFilter() {
+  const startInput = document.getElementById("startDate");
+  const endInput = document.getElementById("endDate");
+  const applyCalender = document.getElementById("apply-calender-filter");
+  const clearCalender = document.getElementById("clear-calender-filter");
+  applyCalender.classList.add("disabled");
+  clearCalender.classList.add("disabled");
+  endInput.classList.add("disabled");
+  const baseDate = "2025-04-03";
+  const today = new Date().toISOString().split("T")[0];
+  startInput.min = baseDate;
+  startInput.max = today;
+  startInput.addEventListener("change", () => {
+    if (startInput.value) {
+      endInput.classList.remove("disabled");
+    }
+    endInput.min = startInput.value || baseDate;
+    endInput.max = today;
+  });
+  endInput.addEventListener("change", () => {
+    if (endInput.value) {
+      applyCalender.classList.remove("disabled");
+    }
+  });
+  applyCalender.addEventListener("click", () => {
+    clearCalender.classList.remove("disabled");
+    filterByCalender(startInput.value, endInput.value);
+  });
+  clearCalender.addEventListener("click", clearCalenderFilter);
+}
+function filterByCalender(startDate, endDate) {
+  const calenderSessions = sessions.filter(
+    (session) => session.date >= startDate && session.date <= endDate
+  );
+  populateSessionsTable(calenderSessions);
+  updateSessionCount(calenderSessions.length);
+}
+function clearCalenderFilter() {
+  const startInput = document.getElementById("startDate");
+  const endInput = document.getElementById("endDate");
+  const applyCalender = document.getElementById("apply-calender-filter");
+  const clearCalender = document.getElementById("clear-calender-filter");
+  startInput.value = "";
+  endInput.value = "";
+  endInput.classList.add("disabled");
+  applyCalender.classList.add("disabled");
+  clearCalender.classList.add("disabled");
+  populateSessionsTable(sessions);
+  updateSessionCount(sessions.length);
+}
 function populateUserFilters() {
   const users = [
     ...new Set(
@@ -196,15 +242,64 @@ function populateFileFilters() {
     optionsContainer.appendChild(option);
   });
 }
-
 function populateProjectFilters() {
-  console.log("Project Filter Selected");
+  const projects = [
+    ...new Set(sessions.map((session) => session.projectName).filter(Boolean)),
+  ];
+
+  const dropdown = document.getElementById("filter-dropdown");
+  const optionsContainer = dropdown.querySelector(".options");
+  const input = dropdown.querySelector(".dropdown-title");
+
+  // Clear previous
+  optionsContainer.innerHTML = "";
+  input.value = "";
+
+  projects.forEach((project) => {
+    const option = document.createElement("div");
+    option.classList.add("option");
+    option.textContent = project;
+
+    option.addEventListener("click", () => {
+      input.value = project;
+      optionsContainer.style.display = "none";
+      filterTable_Project(project);
+    });
+
+    optionsContainer.appendChild(option);
+  });
 }
 function populateVersionFilters() {
-  console.log("Version Filter Selected");
+  const versions = [
+    ...new Set(sessions.map((session) => session.revitVersion).filter(Boolean)),
+  ];
+
+  const dropdown = document.getElementById("filter-dropdown");
+  const optionsContainer = dropdown.querySelector(".options");
+  const input = dropdown.querySelector(".dropdown-title");
+
+  // Clear previous
+  optionsContainer.innerHTML = "";
+  input.value = "";
+
+  versions.forEach((version) => {
+    const option = document.createElement("div");
+    option.classList.add("option");
+    option.textContent = version;
+
+    option.addEventListener("click", () => {
+      input.value = version;
+      optionsContainer.style.display = "none";
+      filterTable_Version(version);
+    });
+
+    optionsContainer.appendChild(option);
+  });
 }
 function populateCrashFilters() {
-  console.log("Crash Filter Selected");
+  const filtered = sessions.filter((session) => session.crash);
+  populateSessionsTable(filtered);
+  updateSessionCount(filtered.length);
 }
 function filterTable_User(user) {
   const sessionsArray = sessions;
@@ -217,6 +312,22 @@ function filterTable_User(user) {
 function filterTable_File(file) {
   const sessionsArray = sessions;
   const filtered = sessionsArray.filter((session) => session.fileName === file);
+  populateSessionsTable(filtered);
+  updateSessionCount(filtered.length);
+}
+function filterTable_Project(project) {
+  const sessionsArray = sessions;
+  const filtered = sessionsArray.filter(
+    (session) => session.projectName === project
+  );
+  populateSessionsTable(filtered);
+  updateSessionCount(filtered.length);
+}
+function filterTable_Version(version) {
+  const sessionsArray = sessions;
+  const filtered = sessionsArray.filter(
+    (session) => session.revitVersion === version
+  );
   populateSessionsTable(filtered);
   updateSessionCount(filtered.length);
 }
@@ -235,7 +346,6 @@ function clearDropdown() {
   optionsContainer.innerHTML = "";
   optionsContainer.style.display = "none";
 }
-
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -315,19 +425,16 @@ function populateSessionsTable(dataList) {
   sessionTable.appendChild(tableBody);
   table_container.appendChild(sessionTable);
 }
-
 function parseDuration(duration) {
   const cleanDuration = duration.split(".")[0];
   return cleanDuration;
 }
-
 function parseStartEndTime(time) {
   const [, timePart, period] = time.split(" ");
   const [hr, min] = timePart.split(":");
   const cleanTime = `${hr}:${min} ${period}`;
   return cleanTime;
 }
-
 async function showDetails(sessions, index, row) {
   const session = sessions[index - 1];
   const overlay = document.getElementById("session-overlay");
@@ -344,7 +451,6 @@ async function showDetails(sessions, index, row) {
     row.style.backgroundColor = "white";
   });
 }
-
 function populateSessionDetails(session) {
   const overlay_session_contents = document.getElementById(
     "overlay-session-contents"
@@ -396,7 +502,6 @@ function populateSessionDetails(session) {
   }
   overlay_session_contents.appendChild(table);
 }
-
 async function populateSessionSyncDetails(session) {
   const overlay_syncs_content = document.getElementById(
     "overlay-syncs-contents"
