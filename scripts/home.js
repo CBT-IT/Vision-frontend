@@ -150,7 +150,7 @@ async function populateUserCard() {
 }
 async function populateActiveUsersCard() {
   const activeUserCount = await getActiveUsersCount(token);
-  console.log(activeUserCount);
+  // console.log(activeUserCount);
   const activeUserCard = document.getElementById("active-user-button");
   const active_user_button_data = document.getElementById(
     "active-user-button-data"
@@ -217,7 +217,7 @@ async function populateModelsTrackedCard() {
 
   const modelsTrackedCard = document.getElementById("models-tracked-button");
   modelsTrackedCard.addEventListener("click", async () => {
-    console.log("Models Tracked card clicked");
+    // console.log("Models Tracked card clicked");
     window.location.href = "/pages/models-tracked.html";
   });
 }

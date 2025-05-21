@@ -22,6 +22,7 @@ import {
 } from "../utility/backendCalls.js";
 
 const token = sessionStorage.getItem("idToken");
+let allEntries;
 if (!token) {
   sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
   window.location.href = "../index.html";
@@ -85,13 +86,95 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function populateActiveUsersData() {
-  const allActiveUsers = (await getActiveUsers(token)).activeUsers;
+  allEntries = (await getActiveUsers(token)).activeUsers;
   const userMappings = (await getUserMappingsByAutodesk(token)).userMappings;
   //   console.log(userMappings);
   const activeUsers = new Set(
-    allActiveUsers.map((user) => userMappings[user.autodeskUserName])
+    allEntries.map((user) => userMappings[user.autodeskUserName])
   );
-  console.log(activeUsers);
+  populateUserList(userMappings);
+  //   console.log(activeUsers);
 }
+function populateUserList(userMappings) {
+  //   console.log(allEntries);
+  const activeUsers = new Set(
+    allEntries.map((entry) => entry.autodeskUserName)
+  );
+  //   console.log(activeUsers);
+  const user_list = document.getElementById("user-list");
+  user_list.innerHTML = "";
+  const userTableTitle = document.createElement("div");
+  userTableTitle.textContent = `Active Users - ${activeUsers.size}`;
+  user_list.appendChild(userTableTitle);
+  const userTable = document.createElement("table");
+  const headers = ["User", "Active Sessions"];
+  const tableHeader = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  headers.forEach((header) => {
+    const headerData = document.createElement("th");
+    headerData.textContent = header;
+    headerRow.appendChild(headerData);
+  });
+  tableHeader.appendChild(headerRow);
+  userTable.appendChild(tableHeader);
+  const tableBody = document.createElement("tbody");
+  //   console.log(activeUsers);
+  activeUsers.forEach((user) => {
+    const userValues = [userMappings[user], getUserSessionCount(user)];
+    // console.log(userValues);
 
+    const bodyRow = document.createElement("tr");
+    for (const userValue of userValues) {
+      const data = document.createElement("td");
+      data.textContent = userValue;
+      bodyRow.appendChild(data);
+    }
+    bodyRow.addEventListener("click", () =>
+      showUserSessions(bodyRow, userMappings)
+    );
+    tableBody.appendChild(bodyRow);
+  });
+  userTable.appendChild(tableBody);
+  user_list.appendChild(userTable);
+}
+function getUserSessions(autodeskName) {
+  const userEntry = allEntries.filter(
+    (entry) => entry.autodeskUserName == autodeskName && !entry.crash
+  );
+  return userEntry;
+}
+function getUserSessionCount(autodeskName) {
+  const userEntry = allEntries.filter(
+    (entry) => entry.autodeskUserName == autodeskName && !entry.crash
+  );
+  //   console.log(userEntry);
+  return userEntry.length;
+}
+function showUserSessions(userRow, userMappings) {
+  //   console.log("Clicked");
+  const user = userRow.childNodes[0].textContent;
+  const autodeskName = Object.keys(userMappings).find(
+    (key) => userMappings[key] === user
+  );
+  const sessions = getUserSessions(autodeskName);
+  const fileNames = sessions.map((session) => session.fileName);
+
+  console.log(fileNames);
+  //   console.log(user.textContent);
+  const models_list = document.getElementById("models-list");
+  models_list.innerHTML = "";
+  const userCard = document.createElement("div");
+  userCard.id = "user-session-card";
+  const name = document.createElement("div");
+  name.textContent = user;
+  const files = document.createElement("div");
+  fileNames.forEach((file) => {
+    const fileEntry = document.createElement("div");
+    fileEntry.textContent = file;
+    files.appendChild(fileEntry);
+  });
+  userCard.appendChild(name);
+  userCard.appendChild(files);
+  models_list.appendChild(userCard);
+}
 initPage();
