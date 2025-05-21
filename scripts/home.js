@@ -115,7 +115,6 @@ async function populateSessionsCard() {
   sessions_button_summary.textContent = `+${sessionsTodayCount}`;
   const sessionsCard = document.getElementById("sessions-button");
   sessionsCard.addEventListener("click", () => {
-    console.log("Sessions Card Clicked");
     window.location.href = "/pages/sessions.html";
   });
 }
@@ -130,7 +129,6 @@ async function populateSyncsCard() {
 
   const syncsCard = document.getElementById("syncs-button");
   syncsCard.addEventListener("click", () => {
-    console.log("Syncs Card Clicked");
     window.location.href = "/pages/syncs.html";
   });
 }
@@ -152,10 +150,15 @@ async function populateUserCard() {
 }
 async function populateActiveUsersCard() {
   const activeUserCount = await getActiveUsersCount(token);
+  console.log(activeUserCount);
+  const activeUserCard = document.getElementById("active-user-button");
   const active_user_button_data = document.getElementById(
     "active-user-button-data"
   );
   active_user_button_data.textContent = activeUserCount.count;
+  activeUserCard.addEventListener("click", () => {
+    window.location.href = "/pages/active-users.html";
+  });
 }
 async function populateActivityChart() {
   const chartSpace = document.getElementById("right-data-chart");
@@ -218,7 +221,6 @@ async function populateModelsTrackedCard() {
     window.location.href = "/pages/models-tracked.html";
   });
 }
-
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

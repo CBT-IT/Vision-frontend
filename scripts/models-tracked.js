@@ -29,7 +29,7 @@ const user = sessionStorage.getItem("userEmail");
 const loading_screen = document.getElementById("loading-message");
 const main_container = document.getElementById("main-container");
 
-async function initHomepage() {
+async function initPage() {
   if (!token) {
     window.location.href = "../index.html";
     return;
@@ -75,7 +75,7 @@ async function updatePage() {
   });
 
   document.getElementById("refresh-button").addEventListener("click", () => {
-    initHomepage();
+    initPage();
   });
 
   await populateModelsTrackedTable();
@@ -84,7 +84,7 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-initHomepage();
+initPage();
 
 async function populateModelsTrackedTable() {
   const modelsTableContainer = document.getElementById(
