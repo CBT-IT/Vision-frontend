@@ -104,8 +104,15 @@ function populateUserList(userMappings) {
   const user_list = document.getElementById("user-list");
   user_list.innerHTML = "";
   const userTableTitle = document.createElement("div");
+  userTableTitle.id = "user-table-title";
+  userTableTitle.classList.add("data-title");
   userTableTitle.textContent = `Active Users - ${activeUsers.size}`;
   user_list.appendChild(userTableTitle);
+  const divider1 = document.createElement("div");
+  divider1.classList.add("divider");
+  user_list.appendChild(divider1);
+  const tableContainer = document.createElement("div");
+  tableContainer.id = "table-container";
   const userTable = document.createElement("table");
   const headers = ["User", "Active Sessions"];
   const tableHeader = document.createElement("thead");
@@ -135,7 +142,11 @@ function populateUserList(userMappings) {
     tableBody.appendChild(bodyRow);
   });
   userTable.appendChild(tableBody);
-  user_list.appendChild(userTable);
+  tableContainer.appendChild(userTable);
+  user_list.appendChild(tableContainer);
+  const divider2 = document.createElement("div");
+  divider2.classList.add("divider");
+  user_list.appendChild(divider2);
 }
 function getUserSessions(autodeskName) {
   const userEntry = allEntries.filter(
@@ -163,18 +174,21 @@ function showUserSessions(userRow, userMappings) {
   //   console.log(user.textContent);
   const models_list = document.getElementById("models-list");
   models_list.innerHTML = "";
-  const userCard = document.createElement("div");
-  userCard.id = "user-session-card";
+  models_list.style.display = "flex";
   const name = document.createElement("div");
+  name.classList.add("data-title");
   name.textContent = user;
   const files = document.createElement("div");
   fileNames.forEach((file) => {
     const fileEntry = document.createElement("div");
     fileEntry.textContent = file;
+    fileEntry.id = "model-file";
     files.appendChild(fileEntry);
   });
-  userCard.appendChild(name);
-  userCard.appendChild(files);
-  models_list.appendChild(userCard);
+  models_list.appendChild(name);
+  const divider = document.createElement("div");
+  divider.classList.add("divider");
+  models_list.appendChild(divider);
+  models_list.appendChild(files);
 }
 initPage();
