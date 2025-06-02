@@ -147,6 +147,11 @@ async function populateUserCard() {
   const userCount = await getUserCount(token);
   const user_button_data = document.getElementById("user-button-data");
   user_button_data.textContent = userCount.count;
+
+  const user_button = document.getElementById("user-button");
+  user_button.addEventListener("click", () => {
+    window.location.href = "/pages/users.html";
+  });
 }
 async function populateActiveUsersCard() {
   const activeUserCount = await getActiveUsersCount(token);

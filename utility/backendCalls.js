@@ -8,6 +8,9 @@ export async function getSessionsInfo(token) {
 export async function getUserCount(token) {
   return await safeFetch(`${backendURL_PROD}/user-count`, token);
 }
+export async function getUsers(token) {
+  return await safeFetch(`${backendURL_PROD}/users`, token);
+}
 export async function getSessionsInfoToday(token) {
   return await safeFetch(`${backendURL_PROD}/sessions-info-today`, token);
 }
@@ -67,6 +70,12 @@ export async function getUserMappingsByAutodesk(token) {
 export async function getSyncsInSession(token, id) {
   return await safeFetch(
     `${backendURL_PROD}/syncs-in-session?sessionId=${id}`,
+    token
+  );
+}
+export async function getLastUserEntry(token, user) {
+  return await safeFetch(
+    `${backendURL_PROD}/last-user-entry?user=${encodeURIComponent(user)}`,
     token
   );
 }
