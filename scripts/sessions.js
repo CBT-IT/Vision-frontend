@@ -32,6 +32,15 @@ async function getSessions() {
   sessions = sessionResponse.sessionsInfo.reverse();
   sessionCount = await getSessionsCount(token);
 }
+async function refreshSessionData() {
+  await getSessions();
+  updateSessionCount(sessionCount);
+  populateSessionsTable(sessions);
+  clearRadios();
+  clearCalenderFilter();
+  clearDropdown();
+  clearFilters(document.getElementById("filter-dropdown-container"));
+}
 
 async function initHomepage() {
   if (!token) {
@@ -46,11 +55,15 @@ async function initHomepage() {
     await sleep(500);
     loading_screen.style.display = "none";
     main_container.style.display = "flex";
+    document
+      .getElementById("refresh-button")
+      .addEventListener("click", refreshSessionData);
   } catch (err) {
     alert("Error Loading: " + err.message);
   }
 }
 async function updatePage() {
+  await getSessions();
   //add navbar
   const navres = await fetch("/components/navbar.html");
   const navHTML = await navres.text();
@@ -76,14 +89,6 @@ async function updatePage() {
     sessionStorage.clear();
     window.location.href = "../index.html";
   });
-
-  document
-    .getElementById("refresh-button")
-    .addEventListener("click", async () => {
-      await getSessions();
-      clearRadios();
-      await initHomepage();
-    });
 
   updateSessionCount(sessionCount);
   populateSessionsTable(sessions);
@@ -559,7 +564,7 @@ async function populateSessionSyncDetails(session) {
     headerRow.appendChild(headerData);
   });
   thead.appendChild(headerRow);
-  syncsTable.appendChild(headerRow);
+  syncsTable.appendChild(thead);
 
   let count = 1;
   syncs.forEach((sync) => {
