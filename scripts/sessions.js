@@ -77,11 +77,13 @@ async function updatePage() {
     window.location.href = "../index.html";
   });
 
-  document.getElementById("refresh-button").addEventListener("click", () => {
-    getSessions();
-    clearRadios();
-    initHomepage();
-  });
+  document
+    .getElementById("refresh-button")
+    .addEventListener("click", async () => {
+      await getSessions();
+      clearRadios();
+      await initHomepage();
+    });
 
   updateSessionCount(sessionCount);
   populateSessionsTable(sessions);
