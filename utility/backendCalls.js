@@ -61,6 +61,9 @@ export async function getActivityChartData(token) {
 export async function getCloudProjectsCount(token) {
   return await safeFetch(`${backendURL_PROD}/cloud-projects-count`, token);
 }
+export async function getCloudProjects(token) {
+  return await safeFetch(`${backendURL_PROD}/cloud-projects`, token);
+}
 export async function getModelsTrackedCount(token) {
   return await safeFetch(`${backendURL_PROD}/models-tracked-count`, token);
 }

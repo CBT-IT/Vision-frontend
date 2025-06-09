@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../vision.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../styles/base.css" />
+    <link rel="stylesheet" href="../styles/cloud-projects.css" />
+    <title>Vision | Cloud Projects</title>
+  </head>
+  <body>
+    <div id="loading-message">
+      <div>HOLD ON</div>
+      <div id="sub-message">Loading Data</div>
+      <img src="../loading.gif" alt="loading" />
+    </div>
+    <div id="main-container" style="display: none">
+      <div id="navbar-placeholder"></div>
+      <div id="data-view">
+        <div id="active-users-container">
+          <div id="user-list"></div>
+          <div id="models-list" style="display: none"></div>
+        </div>
+        <div id="cloud-projects-container">
+          <div id="selection-tabs">
+            <div class="selection-button" id="all-projects-button">
+              <div class="selection-button-header">All Projects</div>
+              <div class="selection-button-data" id="all-projects-data"></div>
+            </div>
+            <div class="selection-button" id="acc-projects-button">
+              <div class="selection-button-header">ACC Projects</div>
+              <div class="selection-button-data" id="acc-projects-data"></div>
+            </div>
+            <div class="selection-button" id="bim-projects-button">
+              <div class="selection-button-header">BIM Projects</div>
+              <div class="selection-button-data" id="bim-projects-data"></div>
+            </div>
+          </div>
+          <div id="table-tab"></div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="../scripts/cloud-projects.js"></script>
+  </body>
+</html>

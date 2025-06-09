@@ -212,6 +212,12 @@ async function cloudProjectCard() {
     "cloud-projects-button-data"
   );
   cloud_projects_button_data.textContent = count.count;
+
+  const cloudProjectsCard = document.getElementById("cloud-projects-button");
+  cloudProjectsCard.addEventListener("click", async () => {
+    // console.log("Models Tracked card clicked");
+    window.location.href = "/pages/cloud-projects.html";
+  });
 }
 async function populateModelsTrackedCard() {
   const count = await getModelsTrackedCount(token);
