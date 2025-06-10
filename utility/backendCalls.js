@@ -64,6 +64,12 @@ export async function getCloudProjectsCount(token) {
 export async function getCloudProjects(token) {
   return await safeFetch(`${backendURL_PROD}/cloud-projects`, token);
 }
+export async function getCloudProjectsUsers(token, project) {
+  return await safeFetch(
+    `${backendURL_PROD}/cloud-projects-users?project=${project}`,
+    token
+  );
+}
 export async function getModelsTrackedCount(token) {
   return await safeFetch(`${backendURL_PROD}/models-tracked-count`, token);
 }

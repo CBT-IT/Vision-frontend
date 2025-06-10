@@ -14,6 +14,7 @@ import {
   getActivityChartData,
   getCloudProjectsCount,
   getCloudProjects,
+  getCloudProjectsUsers,
   getModelsTrackedCount,
   getModelsTracked,
   getSessionsInfo,
@@ -33,6 +34,7 @@ if (!token) {
 const user = sessionStorage.getItem("userEmail");
 const loading_screen = document.getElementById("loading-message");
 const main_container = document.getElementById("main-container");
+let sortState = { column: "Name", direction: "asc", table: [] };
 
 async function initPage() {
   if (!token) {
@@ -92,8 +94,8 @@ async function getProjects() {
   allProjects = (await getCloudProjects(token)).projects;
   bimProjects = allProjects.filter((x) => x.platform == "bim360");
   accProjects = allProjects.filter((x) => x.platform == "acc");
-  console.log(accProjects[0]);
-  console.log(bimProjects[0]);
+  // console.log(accProjects[0]);
+  // console.log(bimProjects[0]);
 }
 function populateProjects() {
   const all_data = document.getElementById("all-projects-data");
@@ -109,49 +111,228 @@ function populateProjects() {
   accButton.classList.remove("disabled");
   allButton.classList.add("disabled");
   populateTable(allProjects);
+  sortState.table = allProjects;
   accButton.addEventListener("click", () => {
     allButton.classList.remove("disabled");
     bimButton.classList.remove("disabled");
     accButton.classList.add("disabled");
+    sortState.table = accProjects;
     populateTable(accProjects);
   });
   bimButton.addEventListener("click", () => {
     allButton.classList.remove("disabled");
     bimButton.classList.add("disabled");
     accButton.classList.remove("disabled");
+    sortState.table = bimProjects;
     populateTable(bimProjects);
   });
   allButton.addEventListener("click", () => {
     allButton.classList.add("disabled");
     bimButton.classList.remove("disabled");
     accButton.classList.remove("disabled");
+    sortState.table = allProjects;
     populateTable(allProjects);
   });
 }
 function populateTable(projects) {
+  const project_table_tab = document.getElementById("project-table-tab");
+  project_table_tab.innerHTML = "";
   let table_tab = document.getElementById("table-tab");
   table_tab.innerHTML = "";
   const headers = ["#", "Name", "Created At", "Members"];
-  let html = "<table>";
+  const table = document.createElement("table");
+  table.id = "project-table";
 
   //header row
-  html += "<thead><tr>";
-  html += headers.map((header) => `<th>${header}</th>`).join("");
-  html += "</tr></thead>";
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  headers.forEach((header) => {
+    const data = document.createElement("th");
+    data.textContent = header;
+    if (header != "#") {
+      data.addEventListener("click", () => {
+        handleSort(data);
+      });
+      data.classList.add("sort-header");
+    }
+    headerRow.appendChild(data);
+  });
+  thead.appendChild(headerRow);
 
   //data rows
-  html += "<tbody>";
-  html += projects
-    .map((project, index) => {
-      return `<tr>
-        <td>${index + 1}</td>
-        <td>${project.name}</td>
-        <td>${project.createdAt.split("T")[0]}</td>
-        <td>${project.memberCount}</td>
-        </tr>`;
-    })
-    .join("");
+  const tbody = document.createElement("tbody");
+  projects.forEach((project, index) => {
+    const bodyRow = document.createElement("tr");
+    const dataValues = [
+      index + 1,
+      project.name,
+      project.createdAt.split("T")[0],
+      project.memberCount,
+    ];
+    dataValues.forEach((value) => {
+      const data = document.createElement("td");
+      data.textContent = value;
+      bodyRow.appendChild(data);
+      bodyRow.setAttribute("data-project-id", project.id);
+    });
+    tbody.appendChild(bodyRow);
+    bodyRow.addEventListener("click", () => selectProject(bodyRow));
+  });
 
-  table_tab.innerHTML = html;
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  table_tab.appendChild(table);
+}
+async function selectProject(row) {
+  const id = row.getAttribute("data-project-id");
+  const project = sortState.table.find((project) => project.id == id);
+  // console.log(project);
+  const users = (await getCloudProjectsUsers(token, project.id)).users;
+  splitUsers(users);
+}
+function splitUsers(users) {
+  const admin = [];
+  const member = [];
+  users.forEach((user) => {
+    // console.log(user);
+    const projectAdminProduct = user.products.find(
+      (p) => p.key === "projectAdministration"
+    );
+
+    const isAdmin = projectAdminProduct?.access === "administrator";
+
+    if (isAdmin) {
+      admin.push(user);
+    } else {
+      member.push(user);
+    }
+  });
+  populateUserTables(member, admin);
+}
+function populateUserTables(members, admins) {
+  const project_table_tab = document.getElementById("project-table-tab");
+  project_table_tab.innerHTML = "";
+  const adminTableContainer = document.createElement("div");
+  adminTableContainer.id = "admin-user-table-container";
+  const adminTable = document.createElement("table");
+  const adminCaption = document.createElement("caption");
+  adminCaption.textContent = `Admins - ${admins.length}`;
+  adminTable.id = "admin-user-table";
+  adminTable.appendChild(adminCaption);
+  adminTable.classList.add("user-table");
+  const memberTableContainer = document.createElement("div");
+  memberTableContainer.id = "member-user-table-container";
+  const memberTable = document.createElement("table");
+  const memberCaption = document.createElement("caption");
+  memberCaption.textContent = `Members - ${members.length}`;
+  memberTable.appendChild(memberCaption);
+  memberTable.id = "member-user-table";
+  memberTable.classList.add("user-table");
+  //header row
+
+  adminTableContainer.appendChild(createUserTable(adminTable, admins));
+  memberTableContainer.appendChild(createUserTable(memberTable, members));
+  project_table_tab.appendChild(adminTableContainer);
+  project_table_tab.appendChild(memberTableContainer);
+}
+function createUserTable(userTable, users) {
+  const headers = ["#", "Name", "Date Added", "Company"];
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  headers.forEach((header) => {
+    const data = document.createElement("th");
+    data.textContent = header;
+    headerRow.appendChild(data);
+  });
+  thead.appendChild(headerRow);
+  userTable.appendChild(thead);
+  //body data
+  const tbody = document.createElement("tbody");
+  users.forEach((user, index) => {
+    // console.log(user);
+    const row = document.createElement("tr");
+    const values = [
+      index + 1,
+      user.name,
+      user.addedOn.split("T")[0],
+      user.companyName,
+    ];
+    values.forEach((value) => {
+      const data = document.createElement("td");
+      data.textContent = value;
+      row.appendChild(data);
+    });
+    tbody.appendChild(row);
+  });
+  userTable.appendChild(tbody);
+  return userTable;
+}
+function handleSort(header) {
+  const selectedHeader = header.innerText.split(" ")[0];
+  const currentSortCol = sortState.column;
+  const currentSortVal = sortState.direction;
+  if (currentSortCol == selectedHeader) {
+    currentSortVal == "asc"
+      ? (sortState.direction = "des")
+      : (sortState.direction = "asc");
+  } else {
+    sortState.column = selectedHeader;
+    sortState.direction = "asc";
+  }
+  document.querySelectorAll(".sort-header").forEach((th) => {
+    const base = th.textContent.split(" ")[0];
+    th.textContent = base;
+
+    // Match by cleaned base text and column
+    if (
+      base === sortState.column ||
+      (base === "Created" && sortState.column === "Created") ||
+      (base === "Members" && sortState.column === "Members")
+    ) {
+      th.textContent += sortState.direction === "asc" ? " ▲" : " ▼";
+    }
+  });
+  sortColumn();
+}
+function sortColumn() {
+  const sortBy = sortState.column;
+  const table = sortState.table;
+  const direction = sortState.direction;
+  if (sortBy == "Name") {
+    if (direction == "asc") {
+      table.sort((a, b) => {
+        if (a.name.trim() < b.name.trim()) return -1;
+        if (a.name.trim() > b.name.trim()) return 1;
+        return 0;
+      });
+    } else {
+      table.sort((a, b) => {
+        if (a.name.trim() < b.name.trim()) return 1;
+        if (a.name.trim() > b.name.trim()) return -1;
+        return 0;
+      });
+    }
+  } else if (sortBy == "Created") {
+    if (direction == "asc") {
+      table.sort(
+        (a, b) =>
+          new Date(a.createdAt.split("T")[0]) -
+          new Date(b.createdAt.split("T")[0])
+      );
+    } else {
+      table.sort(
+        (a, b) =>
+          new Date(b.createdAt.split("T")[0]) -
+          new Date(a.createdAt.split("T")[0])
+      );
+    }
+  } else {
+    if (direction == "asc") {
+      table.sort((a, b) => a.memberCount - b.memberCount);
+    } else {
+      table.sort((a, b) => b.memberCount - a.memberCount);
+    }
+  }
+  populateTable(table);
 }
 initPage();

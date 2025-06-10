@@ -59,6 +59,116 @@
   border: 3px solid var(--cbt-blue);
 }
 #table-tab {
-  overflow-y: auto;
   max-height: 750px;
+  overflow-y: auto;
+  border: 2px solid var(--cbt-blue);
+}
+#project-table {
+  border-collapse: collapse;
+  background-color: white;
+}
+#project-table thead {
+  font-size: 14px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 10px;
+  background-color: white;
+}
+#project-table tbody {
+  background-color: var(--primary-color);
+  text-align: left;
+}
+#project-table td,
+#project-table th {
+  padding: 10px;
+}
+
+#project-table tbody tr:hover {
+  background-color: white;
+  color: var(--cbt-blue);
+  cursor: pointer;
+}
+#project-table th:nth-child(1) {
+  width: 25px;
+}
+#project-table th:nth-child(2) {
+  width: 250px;
+}
+#project-table th:nth-child(3) {
+  width: 100px;
+}
+#project-table th:nth-child(4) {
+  width: 100px;
+}
+.sort-header {
+  cursor: pointer;
+}
+.selected-sort {
+  color: var(--cbt-blue);
+}
+#project-table-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#admin-user-table-container {
+  height: 300px;
+  overflow-y: auto;
+  border: 2px solid var(--cbt-blue);
+}
+#member-user-table-container {
+  height: 435px;
+  overflow-y: auto;
+  border: 2px solid var(--cbt-blue);
+}
+#member-user-table,
+#admin-user-table {
+  border-collapse: collapse;
+  background-color: white;
+}
+#member-user-table thead,
+#admin-user-table thead {
+  font-size: 14px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 10px;
+  background-color: white;
+}
+#member-user-table caption,
+#admin-user-table caption {
+  background-color: white;
+  color: var(--cbt-blue);
+  padding: 5px;
+  font-weight: bold;
+}
+#member-user-table tbody,
+#admin-user-table tbody {
+  background-color: var(--primary-color);
+  text-align: left;
+}
+#member-user-table td,
+#admin-user-table td,
+#member-user-table th,
+#admin-user-table th {
+  padding: 10px;
+}
+#member-user-table th:nth-child(1),
+#admin-user-table th:nth-child(1) {
+  width: 25px;
+}
+#member-user-table th:nth-child(2),
+#admin-user-table th:nth-child(2) {
+  width: 150px;
+}
+#member-user-table th:nth-child(3),
+#admin-user-table th:nth-child(3) {
+  width: 100px;
+}
+#member-user-table th:nth-child(4),
+#admin-user-table th:nth-child(4) {
+  width: 150px;
 }
