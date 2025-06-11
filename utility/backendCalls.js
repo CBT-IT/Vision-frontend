@@ -11,6 +11,12 @@ export async function getUserCount(token) {
 export async function getUsers(token) {
   return await safeFetch(`${backendURL_PROD}/users`, token);
 }
+export async function getUserInfoByYear(token, year) {
+  return await safeFetch(
+    `${backendURL_PROD}/user-info-by-year?year=${year}`,
+    token
+  );
+}
 export async function getSessionsInfoToday(token) {
   return await safeFetch(`${backendURL_PROD}/sessions-info-today`, token);
 }

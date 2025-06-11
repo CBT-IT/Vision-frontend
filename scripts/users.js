@@ -4,6 +4,7 @@ import {
   getUsers,
   getLastUserEntry,
   getUserMappingsByAutodesk,
+  getUserInfoByYear,
   getSyncsInSession,
   getSessionsInfoToday,
   getSyncInfoToday,
@@ -91,31 +92,86 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function populateUsers() {
-  const users = (await getUsers(token)).users;
-  const userCount = document.getElementById("user-header");
-  userCount.textContent = `Users - ${users.length}`;
-  let userMap = userMappings.userMappings;
-  const userList = document.getElementById("user-list");
-  // console.log(users);
-  users.forEach((user) => {
-    const userCard = document.createElement("div");
-    userCard.classList.add("user-card");
-    const userImage = document.createElement("img");
-    userImage.classList.add("user-image");
-    const userName = userMap[user];
-    // console.log(userName);
-    const userImageLocation = getUserImage(userName.toLowerCase());
-    userImage.src = userImageLocation;
-    userImage.onerror = () => {
-      userImage.src = getUserImage("placeholder");
-    };
-    // console.log(userImage);
-    const nameLabel = document.createElement("div");
-    nameLabel.classList.add("user-name-label");
-    nameLabel.textContent = userName;
-    userCard.appendChild(userImage);
-    userCard.appendChild(nameLabel);
-    userList.appendChild(userCard);
+  const user_header = document.getElementById("user-header");
+  const versions = ["2022", "2024", "2025"];
+  versions.forEach((version, index) => {
+    const version_button = document.createElement("div");
+    version_button.classList.add("version-button");
+    version_button.textContent = version;
+    if (index == 0) {
+      version_button.classList.add("disabled");
+    }
+    user_header.appendChild(version_button);
+    version_button.addEventListener("click", () =>
+      handleVersionClick(version_button)
+    );
   });
+  const count_button = document.createElement("div");
+  count_button.textContent = "User Count";
+  count_button.id = "user-year-count";
+  count_button.classList.add("version-button");
+  user_header.appendChild(count_button);
+
+  updateTable(versions[0]);
+}
+function handleVersionClick(button) {
+  const selectedYear = button.innerText;
+  const user_header = document.getElementById("user-header");
+  const versions = user_header.childNodes;
+  versions.forEach((version) => {
+    if (version.innerText == selectedYear) {
+      version.classList.add("disabled");
+    } else {
+      version.classList.remove("disabled");
+    }
+  });
+  updateTable(selectedYear);
+}
+async function updateTable(selectedYear) {
+  const userMappings = (await getUserMappingsByAutodesk(token)).userMappings;
+  const userList = await getUserInfoByYear(token, selectedYear);
+  const user_year_count = document.getElementById("user-year-count");
+  user_year_count.textContent = `User Count - ${userList.count}`;
+  console.log(userList);
+
+  const user_list = document.getElementById("user-list");
+  user_list.innerHTML = "";
+  //Table
+  const table = document.createElement("table");
+  table.id = "user-table";
+
+  //header
+  const headers = ["#", "Name", "Device", "CBT Version"];
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  headers.forEach((header) => {
+    const data = document.createElement("th");
+    data.textContent = header;
+    headerRow.appendChild(data);
+  });
+  thead.appendChild(headerRow);
+
+  //body
+  const tbody = document.createElement("tbody");
+  const users = userList.users;
+  users.forEach((user, index) => {
+    const row = document.createElement("tr");
+    const dataValues = [
+      index + 1,
+      userMappings[user.autodeskUserName],
+      user.latestEntry.deviceName,
+      user.latestEntry.cbtToolsVersion,
+    ];
+    dataValues.forEach((value) => {
+      const data = document.createElement("td");
+      data.textContent = value;
+      row.appendChild(data);
+    });
+    tbody.appendChild(row);
+  });
+
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  user_list.appendChild(table);
 }
 initPage();

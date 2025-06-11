@@ -20,46 +20,73 @@
 #user-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
 }
 #user-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: left;
+}
+.version-button {
+  padding: 10px;
+  background-color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  font-size: 14px;
   font-weight: bold;
   color: var(--cbt-blue);
-  font-size: 18px;
+}
+.version-button:hover {
+  cursor: pointer;
+  border: 2px solid var(--cbt-blue);
+}
+.disabled {
+  background-color: var(--light-blue);
+  color: black;
+  pointer-events: none;
 }
 #user-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 10px;
-  width: 550px;
-  padding: 10px;
+  padding-top: 10px;
   max-height: 700px;
   overflow-y: auto;
 }
-.user-card {
+#user-table {
+  border-collapse: collapse;
   background-color: white;
-  align-items: center;
-  border-radius: 10px;
-  border: 2px solid lightgray;
-  height: 150px;
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-.user-card:hover {
-  cursor: pointer;
   border: 2px solid var(--cbt-blue);
-
-  box-shadow: 1px 1px 10px grey;
 }
-.user-image {
-  width: 100px;
-  border-radius: 5px;
-}
-.user-name-label {
-  color: var(--cbt-blue);
+#user-table thead {
   font-size: 14px;
-  font-weight: bold;
-  text-align: center;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 10px;
+  background-color: white;
+}
+#user-table tbody {
+  background-color: var(--primary-color);
+  text-align: left;
+}
+#user-table td,
+#user-table th {
+  padding: 10px;
+}
+#user-table tbody tr:hover {
+  background-color: white;
+  color: var(--cbt-blue);
+  cursor: pointer;
+}
+#user-table th:nth-child(1) {
+  width: 25px;
+}
+#user-table th:nth-child(2) {
+  width: 150px;
+}
+#user-table th:nth-child(3) {
+  width: 150px;
+}
+#user-table th:nth-child(4) {
+  width: 100px;
 }
