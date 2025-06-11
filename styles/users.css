@@ -90,3 +90,71 @@
 #user-table th:nth-child(4) {
   width: 100px;
 }
+#user-data {
+  display: flex;
+  flex-direction: row;
+  padding-left: 10px;
+}
+#user-profile {
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+#profile-data {
+  display: flex;
+  flex-direction: row;
+}
+.user-image {
+  width: 150px;
+  height: 160px;
+  border-radius: 20px;
+}
+#user-metadata {
+  width: 350px;
+  margin-right: 10px;
+  border-right: 4px solid var(--cbt-blue);
+}
+.value-data {
+  padding: 5px;
+  font-weight: bold;
+  color: var(--cbt-blue);
+}
+.value-label {
+  padding: 5px;
+  font-weight: normal;
+  font-size: 12px;
+  color: black;
+  background-color: var(--primary-color);
+  border-radius: 5px;
+}
+#user-metadata td:nth-child(1) {
+  width: 100px;
+}
+#project-file-list {
+  margin-top: 10px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 2px solid var(--cbt-blue);
+}
+#project-list-header {
+  text-align: center;
+  font-weight: bold;
+  color: var(--cbt-blue);
+  font-size: 14px;
+  padding-bottom: 5px;
+}
+.project-entry {
+  text-align: left;
+  background-color: var(--primary-color);
+  font-weight: bold;
+  padding: 10px;
+}
+.file-entry {
+  text-align: right;
+  padding: 5px;
+}

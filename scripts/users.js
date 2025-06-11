@@ -23,6 +23,7 @@ import {
   getViewBookmarks,
   getActiveUsers,
   getUserImage,
+  getProjectsByUser,
 } from "../utility/backendCalls.js";
 
 const userPicturesPath =
@@ -93,6 +94,7 @@ function sleep(ms) {
 }
 async function populateUsers() {
   const user_header = document.getElementById("user-header");
+  user_header.innerHTML = "";
   const versions = ["2022", "2024", "2025"];
   versions.forEach((version, index) => {
     const version_button = document.createElement("div");
@@ -125,14 +127,18 @@ function handleVersionClick(button) {
       version.classList.remove("disabled");
     }
   });
+  const user_data = document.getElementById("user-data");
+  user_data.innerHTML = "";
   updateTable(selectedYear);
 }
 async function updateTable(selectedYear) {
+  const user_data = document.getElementById("user-data");
+  user_data.innerHTML = "";
   const userMappings = (await getUserMappingsByAutodesk(token)).userMappings;
   const userList = await getUserInfoByYear(token, selectedYear);
   const user_year_count = document.getElementById("user-year-count");
   user_year_count.textContent = `User Count - ${userList.count}`;
-  console.log(userList);
+  // console.log(userList);
 
   const user_list = document.getElementById("user-list");
   user_list.innerHTML = "";
@@ -167,11 +173,93 @@ async function updateTable(selectedYear) {
       data.textContent = value;
       row.appendChild(data);
     });
+    row.addEventListener("click", () => handleUserRowClick(user));
     tbody.appendChild(row);
   });
 
   table.appendChild(thead);
   table.appendChild(tbody);
   user_list.appendChild(table);
+}
+async function handleUserRowClick(user) {
+  const userMappings = (await getUserMappingsByAutodesk(token)).userMappings;
+  const entry = user.latestEntry;
+
+  const user_data = document.getElementById("user-data");
+  user_data.innerHTML = "";
+
+  const user_profile = document.createElement("div");
+  user_profile.id = "user-profile";
+
+  const profile_data = document.createElement("div");
+  profile_data.id = "profile-data";
+
+  //table
+  const userImage = document.createElement("img");
+  userImage.id = "user-image";
+  const userName = userMappings[user.autodeskUserName];
+  const imageLocation = getUserImage(userName.toLowerCase());
+  userImage.setAttribute("src", imageLocation);
+  userImage.onerror = () => {
+    userImage.src = getUserImage("placeholder");
+  };
+  userImage.classList.add("user-image");
+  const data_table = document.createElement("table");
+  data_table.id = "user-metadata";
+  const dataValues = [
+    ["Name", userName],
+    ["AutodeskId", user.autodeskUserName],
+    ["Drive Space", entry.deviceFreeSpace],
+    ["Last Entry", entry.date],
+  ];
+  const tbody = document.createElement("tbody");
+  dataValues.forEach((value) => {
+    const row = document.createElement("tr");
+    const data1 = document.createElement("td");
+    data1.textContent = value[0];
+    data1.classList = "value-label";
+    const data2 = document.createElement("td");
+    data2.textContent = value[1];
+    data2.classList = "value-data";
+    row.appendChild(data1);
+    row.appendChild(data2);
+
+    tbody.appendChild(row);
+  });
+  data_table.appendChild(tbody);
+  profile_data.appendChild(data_table);
+  profile_data.appendChild(userImage);
+  user_profile.appendChild(profile_data);
+  const projectsData = await populateProjects(user);
+  user_profile.appendChild(projectsData);
+  user_data.appendChild(user_profile);
+}
+async function populateProjects(user) {
+  const userProjects = await getProjectsByUser(token, user.autodeskUserName);
+  // console.log(userProjects);
+  const projectsList = document.createElement("div");
+  projectsList.id = "project-file-list";
+  const projectHeader = document.createElement("div");
+  projectHeader.id = "project-list-header";
+  projectHeader.textContent = `Projects Accessed - ${userProjects.projectCount}`;
+  projectsList.appendChild(projectHeader);
+  const projectListContainer = document.createElement("div");
+  projectListContainer.id = "prject-list-container";
+  const projects = userProjects.projects;
+  projects.forEach((project) => {
+    const data = document.createElement("div");
+    data.textContent = `${project.projectName} -- ${project.files.length}`;
+    data.classList.add("project-entry");
+    projectListContainer.appendChild(data);
+    const files = project.files;
+    files.forEach((file) => {
+      const fileData = document.createElement("div");
+      fileData.textContent = file;
+      fileData.classList.add("file-entry");
+      projectListContainer.appendChild(fileData);
+    });
+  });
+  projectsList.appendChild(projectListContainer);
+  return projectsList;
 }
 initPage();
