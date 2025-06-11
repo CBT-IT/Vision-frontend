@@ -21,9 +21,13 @@ import {
   getPluginUse,
   getViewBookmarks,
   getActiveUsers,
+  getUserImage,
 } from "../utility/backendCalls.js";
 
+const userPicturesPath =
+  "S:\\CAD-BIM-Library\\Comp-Design\\CBT Plugins\\CBT_Vision_Assets\\user_pictures";
 const token = sessionStorage.getItem("idToken");
+const userMappings = await getUserMappingsByAutodesk(token);
 let allEntries;
 if (!token) {
   sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
@@ -88,14 +92,30 @@ function sleep(ms) {
 }
 async function populateUsers() {
   const users = (await getUsers(token)).users;
-  //   console.log(users);
-  console.log(`Device Name -- Last Accessed -- Tools Version`);
-  for (const user of users) {
-    const entry = await getLastUserEntry(token, user);
-    // console.log(user);
-    console.log(
-      `${entry.deviceName} -- ${entry.date} -- ${entry.cbtToolsVersion}`
-    );
-  }
+  const userCount = document.getElementById("user-header");
+  userCount.textContent = `Users - ${users.length}`;
+  let userMap = userMappings.userMappings;
+  const userList = document.getElementById("user-list");
+  // console.log(users);
+  users.forEach((user) => {
+    const userCard = document.createElement("div");
+    userCard.classList.add("user-card");
+    const userImage = document.createElement("img");
+    userImage.classList.add("user-image");
+    const userName = userMap[user];
+    // console.log(userName);
+    const userImageLocation = getUserImage(userName.toLowerCase());
+    userImage.src = userImageLocation;
+    userImage.onerror = () => {
+      userImage.src = getUserImage("placeholder");
+    };
+    // console.log(userImage);
+    const nameLabel = document.createElement("div");
+    nameLabel.classList.add("user-name-label");
+    nameLabel.textContent = userName;
+    userCard.appendChild(userImage);
+    userCard.appendChild(nameLabel);
+    userList.appendChild(userCard);
+  });
 }
 initPage();
