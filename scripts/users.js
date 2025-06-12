@@ -1,96 +1,40 @@
 import {
-  getSessionsCount,
   getUserMappingsByEmail,
-  getUsers,
-  getLastUserEntry,
   getUserMappingsByAutodesk,
   getUserInfoByYear,
-  getSyncsInSession,
-  getSessionsInfoToday,
-  getSyncInfoToday,
-  getPluginUseCount,
-  getPluginUseToday,
-  getUserCount,
-  getActiveUsersCount,
-  getActivityChartData,
-  getCloudProjectsCount,
-  getModelsTrackedCount,
-  getModelsTracked,
-  getSessionsInfo,
-  getSyncInfo,
-  getSyncInfoCount,
-  getPluginUse,
-  getViewBookmarks,
-  getActiveUsers,
   getUserImage,
   getProjectsByUser,
 } from "../utility/backendCalls.js";
+import { validateSession, redirectToLogin } from "../utility/auth.js";
+import {
+  sleep,
+  loadNavbar,
+  toggleLoading,
+  renderUserWelcome,
+} from "../utility/utils.js";
 
-const userPicturesPath =
-  "S:\\CAD-BIM-Library\\Comp-Design\\CBT Plugins\\CBT_Vision_Assets\\user_pictures";
-const token = sessionStorage.getItem("idToken");
-const userMappings = await getUserMappingsByAutodesk(token);
-let allEntries;
-if (!token) {
-  sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
-  window.location.href = "../index.html";
-}
-const user = sessionStorage.getItem("userEmail");
-const loading_screen = document.getElementById("loading-message");
-const main_container = document.getElementById("main-container");
+let token, user, userMappings;
 
 async function initPage() {
-  if (!token) {
-    window.location.href = "../index.html";
-    return;
-  }
+  const session = await validateSession();
+  if (!session) return;
+  token = session.token;
+  user = session.user;
+  userMappings = await getUserMappingsByEmail(token, user);
   try {
-    main_container.style.display = "none";
-    loading_screen.style.display = "flex";
-
+    toggleLoading(true);
     await updatePage();
     await sleep(500);
-    loading_screen.style.display = "none";
-    main_container.style.display = "flex";
+    toggleLoading(false);
   } catch (err) {
-    alert("Error Loading: " + err.message);
+    console.error("Error Loading:", err);
+    redirectToLogin();
   }
 }
 async function updatePage() {
-  //add navbar
-  const navres = await fetch("/components/navbar.html");
-  const navHTML = await navres.text();
-  document.getElementById("navbar-placeholder").innerHTML = navHTML;
-
-  await import("../scripts/navbar.js");
-
-  const page_title = document.getElementById("page-title");
-  page_title.innerHTML = "Users<br>Page";
-
-  const back_button = document.getElementById("back-button");
-  back_button.disabled = false;
-  back_button.addEventListener("click", () => {
-    window.location.href = "/pages/home.html";
-  });
-
-  const user_name = document.getElementById("user-name");
-  const userMappings = await getUserMappingsByEmail(token, user);
-  // console.log(userMappings);
-  user_name.innerHTML = `Welcome,<br>${userMappings.userFilter.fullName}`;
-
-  document.getElementById("logout-button").addEventListener("click", () => {
-    sessionStorage.clear();
-    window.location.href = "../index.html";
-  });
-
-  document.getElementById("refresh-button").addEventListener("click", () => {
-    initPage();
-  });
-
+  await loadNavbar("Users<br>Page");
+  renderUserWelcome(userMappings);
   await populateUsers();
-}
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function populateUsers() {
   const user_header = document.getElementById("user-header");
@@ -134,8 +78,9 @@ function handleVersionClick(button) {
 async function updateTable(selectedYear) {
   const user_data = document.getElementById("user-data");
   user_data.innerHTML = "";
-  const userMappings = (await getUserMappingsByAutodesk(token)).userMappings;
   const userList = await getUserInfoByYear(token, selectedYear);
+  const userMap = (await getUserMappingsByAutodesk(token)).userMappings;
+  console.log(userMap);
   const user_year_count = document.getElementById("user-year-count");
   user_year_count.textContent = `User Count - ${userList.count}`;
   // console.log(userList);
@@ -164,7 +109,7 @@ async function updateTable(selectedYear) {
     const row = document.createElement("tr");
     const dataValues = [
       index + 1,
-      userMappings[user.autodeskUserName],
+      userMap[user.autodeskUserName],
       user.latestEntry.deviceName,
       user.latestEntry.cbtToolsVersion,
     ];
@@ -182,7 +127,7 @@ async function updateTable(selectedYear) {
   user_list.appendChild(table);
 }
 async function handleUserRowClick(user) {
-  const userMappings = (await getUserMappingsByAutodesk(token)).userMappings;
+  const userMap = (await getUserMappingsByAutodesk(token)).userMappings;
   const entry = user.latestEntry;
 
   const user_data = document.getElementById("user-data");
@@ -197,7 +142,7 @@ async function handleUserRowClick(user) {
   //table
   const userImage = document.createElement("img");
   userImage.id = "user-image";
-  const userName = userMappings[user.autodeskUserName];
+  const userName = userMap[user.autodeskUserName];
   const imageLocation = getUserImage(userName.toLowerCase());
   userImage.setAttribute("src", imageLocation);
   userImage.onerror = () => {

@@ -29,3 +29,23 @@ export async function signInUser(email, password) {
     console.error(error.message);
   }
 }
+
+export function getSessionToken() {
+  return sessionStorage.getItem("idToken");
+}
+export function getSessionUser() {
+  return sessionStorage.getItem("userEmail");
+}
+export function redirectToLogin() {
+  sessionStorage.clear();
+  window.location.href = "../index.html";
+}
+export async function validateSession() {
+  const token = getSessionToken();
+  const user = getSessionUser();
+  if (!token || !user) {
+    redirectToLogin();
+    return null;
+  }
+  return { token, user };
+}
