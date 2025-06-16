@@ -15,6 +15,23 @@ export async function safeFetch(url, token, options = {}) {
   }
   return await response.json();
 }
+
+export async function safePut(url, token, body = {}, options = {}) {
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+    ...options.headers,
+  };
+
+  const response = await fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+    ...options,
+  });
+
+  return await response.json();
+}
 // utility/uiUtils.js
 export function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

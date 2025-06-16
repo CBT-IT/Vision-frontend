@@ -15,6 +15,8 @@ import {
   getCloudProjectsCount,
   getCloudProjects,
   getCloudProjectsUsers,
+  getModelManager,
+  putModelManager,
   getModelsTrackedCount,
   getModelsTracked,
   getSessionsInfo,
@@ -174,6 +176,7 @@ function populateTable(projects) {
       data.textContent = value;
       bodyRow.appendChild(data);
       bodyRow.setAttribute("data-project-id", project.id);
+      bodyRow.setAttribute("data-project-name", project.name);
     });
     tbody.appendChild(bodyRow);
     bodyRow.addEventListener("click", () => selectProject(bodyRow));
@@ -185,10 +188,78 @@ function populateTable(projects) {
 }
 async function selectProject(row) {
   const id = row.getAttribute("data-project-id");
+  const projectName = row.getAttribute("data-project-name");
   const project = sortState.table.find((project) => project.id == id);
   // console.log(project);
   const users = (await getCloudProjectsUsers(token, project.id)).users;
   splitUsers(users);
+  showModelManager(projectName);
+}
+async function showModelManager(projectName) {
+  const projectMetadata = document.getElementById("project-metadata");
+  projectMetadata.innerHTML = "";
+  const projectHeader = document.createElement("div");
+  projectHeader.classList.add("project-metadata-header");
+  // console.log(projectName);
+  projectHeader.textContent = projectName;
+  projectMetadata.appendChild(projectHeader);
+
+  const managerDisplay = document.createElement("div");
+  managerDisplay.id = "manager-display";
+  const managerLabel = document.createElement("div");
+  managerLabel.textContent = "Model Manager";
+  managerLabel.id = "manager-display-label";
+  const managerValue = document.createElement("div");
+  const manager = await getModelManager(token, projectName);
+  if (manager) {
+    const managerName = manager.projectFilter.modelManagerName;
+    managerValue.textContent = managerName;
+  } else {
+    managerValue.textContent = "NOT SET";
+    // console.log("No Model Manager");
+  }
+  managerValue.id = "manager-display-value";
+  managerDisplay.appendChild(managerLabel);
+  managerDisplay.appendChild(managerValue);
+  projectMetadata.appendChild(managerDisplay);
+  createAddUpdateButtons(projectMetadata, manager, projectName);
+}
+function createAddUpdateButtons(base, manager, projectName) {
+  const buttons = document.createElement("div");
+  buttons.id = "manager-buttons";
+  if (manager) {
+  } else {
+    const addButton = document.createElement("div");
+    addButton.textContent = "Add";
+    addButton.classList = "manager-button";
+    buttons.appendChild(addButton);
+    base.appendChild(buttons);
+    const inputLine = document.createElement("div");
+    inputLine.id = "manager-input-line";
+    base.appendChild(inputLine);
+    addButton.addEventListener("click", () =>
+      addManager(inputLine, projectName)
+    );
+  }
+}
+function addManager(inputLine, projectName) {
+  inputLine.innerHTML = "";
+  const input = document.createElement("input");
+  input.id = "manager-input";
+  const add = document.createElement("div");
+  add.textContent = "+";
+  add.id = "add-manager-button";
+  inputLine.appendChild(input);
+  inputLine.appendChild(add);
+  add.addEventListener("click", async () => {
+    const managerName = input.value;
+    if (managerName != "") {
+      const result = await putModelManager(token, projectName, managerName);
+      console.log(result);
+      showModelManager(projectName);
+    }
+  });
+  console.log("Add Manager");
 }
 function splitUsers(users) {
   const admin = [];

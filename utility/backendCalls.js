@@ -1,7 +1,19 @@
-import { safeFetch } from "./utils.js";
+import { safeFetch, safePut } from "./utils.js";
 const backendURL_PROD = "https://vision-backend-32ia.onrender.com";
 const backendURL_DEV = "http://localhost:5000";
 
+export async function getModelManager(token, project) {
+  return await safeFetch(
+    `${backendURL_PROD}/get-model-manager?project=${project}`,
+    token
+  );
+}
+export async function putModelManager(token, project, manager) {
+  return await safePut(`${backendURL_PROD}/put-model-manager`, token, {
+    manager,
+    project,
+  });
+}
 export async function getSessionsInfo(token) {
   return await safeFetch(`${backendURL_PROD}/sessions-info`, token);
 }

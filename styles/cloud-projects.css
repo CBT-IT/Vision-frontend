@@ -172,3 +172,74 @@
 #admin-user-table th:nth-child(4) {
   width: 150px;
 }
+#project-metadata {
+  width: 400px;
+}
+.project-metadata-header {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: var(--cbt-blue);
+  min-height: 45px;
+  background-color: white;
+  border: 2px solid var(--cbt-blue);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#manager-display {
+  padding: 10px;
+  margin: 10px 0px;
+  background-color: white;
+  border: 2px solid var(--cbt-blue);
+}
+#manager-display-label {
+  color: black;
+  font-style: italic;
+}
+#manager-display-value {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: right;
+  color: var(--cbt-blue);
+}
+#manager-buttons {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0px;
+}
+.manager-button {
+  padding: 10px;
+  background-color: white;
+  border: 2px solid var(--cbt-blue);
+  cursor: pointer;
+}
+.manager-button:hover {
+  background-color: var(--cbt-blue);
+  border: 2px solid white;
+  color: white;
+}
+#manager-input-line {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+#manager-input {
+  width: 330px;
+  padding: 10px;
+}
+#add-manager-button {
+  font-weight: bold;
+  font-size: 20px;
+  border: 2px solid var(--cbt-blue);
+  padding: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+#add-manager-button:hover {
+  background-color: var(--cbt-blue);
+  border: 2px solid white;
+  color: white;
+}
