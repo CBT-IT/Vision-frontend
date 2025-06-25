@@ -142,6 +142,11 @@ async function populatePluginCard() {
     "plugin-button-summary"
   );
   plugin_button_summary.textContent = `+${pluginUseToday.pluginUse.length}`;
+
+  const plugin_button = document.getElementById("plugin-button");
+  plugin_button.addEventListener("click", () => {
+    window.location.href = "/pages/plugin-use.html";
+  });
 }
 async function populateUserCard() {
   const userCount = await getUserCount(token);

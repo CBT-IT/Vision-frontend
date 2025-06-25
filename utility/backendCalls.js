@@ -54,7 +54,10 @@ export async function getUserMappingsByEmail(token, user) {
 }
 export async function getPluginUse(token) {
   const data = await safeFetch(`${backendURL_PROD}/plugin-use`, token);
-  return data.count;
+  return data;
+}
+export async function getActivePlugins(token) {
+  return await safeFetch(`${backendURL_PROD}/get-active-plugins`, token);
 }
 export async function getPluginUseToday(token) {
   return await safeFetch(`${backendURL_PROD}/plugin-use-today`, token);
@@ -62,6 +65,12 @@ export async function getPluginUseToday(token) {
 export async function getPluginUseCount(token) {
   const data = await safeFetch(`${backendURL_PROD}/plugin-use-count`, token);
   return data.count;
+}
+export async function getPluginCountToday(token, plugin) {
+  return await safeFetch(
+    `${backendURL_PROD}/get-plugin-count-today?plugin=${plugin}`,
+    token
+  );
 }
 export async function getViewBookmarks(token) {
   const data = await safeFetch(`${backendURL_PROD}/view-bookmarks`, token);
